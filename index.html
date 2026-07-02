@@ -4,138 +4,263 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ORA Perfumes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Cairo:wght@500;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fcfcfc;
-            margin: 0;
-            padding: 0;
-            color: #1a1a1a;
-            padding-bottom: 100px;
+        :root {
+            --bg: #0b0a08;
+            --bg-elev: #131210;
+            --surface: #16140f;
+            --surface-2: #1c1a14;
+            --hairline: rgba(201, 168, 106, 0.16);
+            --hairline-strong: rgba(201, 168, 106, 0.35);
+            --gold: #c9a86a;
+            --gold-bright: #e7cd94;
+            --gold-deep: #8a6d3b;
+            --ink: #f3ecdd;
+            --ink-muted: #a89e8c;
+            --ink-faint: #766c5c;
+            --success: #4c7a5a;
         }
 
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Tajawal', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 15% 0%, rgba(201,168,106,0.06), transparent 55%),
+                radial-gradient(ellipse at 85% 20%, rgba(201,168,106,0.05), transparent 50%);
+            margin: 0;
+            padding: 0;
+            color: var(--ink);
+            padding-bottom: 110px;
+        }
+
+        /* ================= HEADER ================= */
         header {
-    background-image: url('images/ora3.jpeg'); /* غيري الاسم لاسم صورتك */
-    background-size: cover;          /* عشان الصورة تغطي المساحة كاملة */
-    background-position: center;     /* عشان الصورة تكون في المنتصف */
-    background-repeat: no-repeat;    /* عشان الصورة متبقاش متكررة */
-    /* ضفنا خلفية سودة شفافة فوق الصورة عشان الكلام الأبيض يظهر بوضوح */
-    background-color: rgba(0, 0, 0, 0.5); 
-    background-blend-mode: overlay;  /* دي بتدمج اللون مع الصورة */
-    
-    color: #fff;
-    text-align: center;
-    padding: 40px 20px;
-    border-bottom: 3px solid #b59410;
-}
+            position: relative;
+            background-image:
+                linear-gradient(180deg, rgba(6,5,4,0.72) 0%, rgba(6,5,4,0.55) 45%, rgba(6,5,4,0.88) 100%),
+                url('images/ora3.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: var(--ink);
+            text-align: center;
+            padding: 54px 20px 34px;
+            border-bottom: 1px solid var(--hairline-strong);
+        }
+
+        header::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -1px;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
 
         header .logo {
-            font-size: 3.5rem;
-            font-weight: bold;
-            letter-spacing: 5px;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.2rem;
+            font-weight: 600;
+            letter-spacing: 10px;
             margin: 0;
+            color: var(--gold-bright);
+            text-shadow: 0 0 22px rgba(231, 205, 148, 0.25);
         }
 
         header .subtitle {
-            font-size: 0.9rem;
-            color: #ccc;
-            margin: 10px 0;
+            font-family: 'Cairo', 'Tajawal', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--ink-muted);
+            letter-spacing: 3px;
+            margin: 12px 0 0;
+            text-transform: uppercase;
         }
 
         .promo-badge {
-            background-color: #b59410;
-            color: #fff;
+            background: transparent;
+            color: var(--gold-bright);
             display: inline-block;
-            padding: 6px 15px;
-            font-size: 0.85rem;
-            border-radius: 20px;
-            margin-top: 10px;
+            padding: 7px 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            border: 1px solid var(--hairline-strong);
+            border-radius: 30px;
+            margin-top: 18px;
+            letter-spacing: 0.3px;
         }
 
+        /* ================= CONTROLS ================= */
         .controls-container {
             max-width: 1200px;
-            margin: 30px auto 10px auto;
+            margin: 34px auto 6px auto;
             padding: 0 20px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 16px;
             align-items: center;
         }
 
-        .search-box {
+        .search-wrap {
+            position: relative;
             width: 100%;
             max-width: 500px;
-            padding: 12px 20px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 25px;
-            outline: none;
-            text-align: center;
-            transition: 0.3s;
         }
 
+        .search-wrap svg {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            width: 17px;
+            height: 17px;
+            stroke: var(--ink-faint);
+            pointer-events: none;
+            transition: stroke 0.25s;
+        }
+
+        .search-wrap:focus-within svg {
+            stroke: var(--gold);
+        }
+
+        .search-clear {
+            position: absolute;
+            top: 50%;
+            left: 16px;
+            transform: translateY(-50%);
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            border: 1px solid var(--hairline);
+            background: transparent;
+            color: var(--ink-faint);
+            font-size: 0.85rem;
+            line-height: 1;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .search-clear:hover {
+            border-color: var(--gold);
+            color: var(--gold-bright);
+        }
+
+        .search-wrap.has-text .search-clear { display: flex; }
+
+        .search-box {
+            width: 100%;
+            padding: 13px 48px 13px 44px;
+            font-size: 0.95rem;
+            font-family: 'Tajawal', sans-serif;
+            letter-spacing: 0.2px;
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            border-radius: 30px;
+            outline: none;
+            text-align: right;
+            color: var(--ink);
+            transition: 0.25s;
+        }
+
+        .search-box::placeholder { color: var(--ink-faint); }
+
         .search-box:focus {
-            border-color: #b59410;
-            box-shadow: 0 0 8px rgba(181, 148, 16, 0.2);
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 106, 0.12);
         }
 
         .filter-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .filter-btn {
-            background-color: #eee;
-            color: #333;
-            border: none;
-            padding: 10px 25px;
-            font-size: 0.95rem;
-            font-weight: 600;
+            background-color: transparent;
+            color: var(--ink-muted);
+            border: 1px solid var(--hairline);
+            padding: 9px 22px;
+            font-size: 0.85rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
             cursor: pointer;
-            border-radius: 20px;
-            transition: 0.3s;
+            border-radius: 30px;
+            transition: 0.25s;
         }
 
         .filter-btn.active, .filter-btn:hover {
-            background-color: #b59410;
-            color: #fff;
+            background-color: var(--gold);
+            border-color: var(--gold);
+            color: #16140f;
         }
 
+        /* ================= SECTIONS ================= */
         .collection-section {
-            padding: 20px 20px;
+            padding: 34px 20px 10px;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .collection-section h2 {
             text-align: center;
-            font-size: 1.6rem;
-            letter-spacing: 1px;
-            margin-bottom: 30px;
-            color: #111;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.15rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            margin-bottom: 34px;
+            color: var(--ink);
+            position: relative;
+            padding-bottom: 16px;
+        }
+
+        .collection-section h2::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
         }
 
         .products-grid {
             display: flex;
             flex-wrap: wrap;
-            gap: 25px;
+            gap: 22px;
             justify-content: center;
         }
 
+        /* ================= CARDS ================= */
         .card {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 25px;
+            background: linear-gradient(180deg, var(--surface) 0%, var(--bg-elev) 100%);
+            border: 1px solid var(--hairline);
+            padding: 22px;
             width: 300px;
-            border-radius: 4px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.35);
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: 0.3s;
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            border-color: var(--hairline-strong);
+            transform: translateY(-4px);
+            box-shadow: 0 14px 32px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,106,0.15);
         }
 
         .card.hidden {
@@ -144,92 +269,114 @@
 
         .status-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            background-color: #2e7d32;
-            color: white;
-            font-size: 0.75rem;
-            padding: 3px 8px;
-            border-radius: 2px;
+            top: 14px;
+            left: 14px;
+            background-color: rgba(76, 122, 90, 0.18);
+            color: #8fd6a6;
+            border: 1px solid rgba(143, 214, 166, 0.35);
+            font-size: 0.68rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
             z-index: 10;
+            letter-spacing: 0.3px;
         }
 
         .product-img {
             width: 100%;
-            height: 220px;
+            height: 210px;
             object-fit: contain;
-            margin-bottom: 15px;
-            background-color: #fafafa;
-            border-radius: 4px;
+            margin-bottom: 16px;
+            background-color: #0f0e0b;
+            border: 1px solid var(--hairline);
+            border-radius: 8px;
+            padding: 8px;
         }
 
         .card h3 {
-            font-size: 0.85rem;
-            color: #777;
-            margin: 5px 0;
-            letter-spacing: 1px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.72rem;
+            color: var(--gold);
+            margin: 4px 0;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
 
         .card h4 {
-            font-size: 1.3rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
             margin: 0 0 10px 0;
+            color: var(--ink);
         }
 
         .tags {
-            font-size: 0.8rem;
-            color: #b59410;
+            font-size: 0.76rem;
+            color: var(--ink-muted);
             font-weight: 500;
-            margin-bottom: 15px;
+            margin-bottom: 14px;
+            letter-spacing: 0.2px;
         }
 
         .desc {
-            font-size: 0.9rem;
-            color: #555;
-            line-height: 1.6;
-            margin-bottom: 20px;
+            font-size: 0.88rem;
+            color: var(--ink-muted);
+            line-height: 1.65;
+            margin-bottom: 18px;
             height: 70px;
             overflow: hidden;
         }
 
         .price {
-            font-size: 1.4rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #111;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            color: var(--gold-bright);
         }
 
         .add-to-cart-btn {
-            background-color: #111;
-            color: white;
-            border: none;
+            background-color: transparent;
+            color: var(--ink);
+            border: 1px solid var(--hairline-strong);
             padding: 12px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
+            font-family: 'Cairo', sans-serif;
             cursor: pointer;
-            font-weight: bold;
+            font-weight: 700;
             width: 100%;
-            transition: 0.3s;
+            border-radius: 6px;
+            letter-spacing: 0.3px;
+            transition: 0.25s;
         }
 
         .add-to-cart-btn:hover {
-            background-color: #b59410;
+            background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+            border-color: var(--gold);
+            color: #16140f;
         }
 
+        /* ================= CART BAR ================= */
         .cart-bar {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: #111;
-            color: #fff;
-            padding: 15px 20px;
+            background-color: rgba(11, 10, 8, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: var(--ink);
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
-            border-top: 3px solid #b59410;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+            border-top: 1px solid var(--hairline-strong);
             z-index: 1000;
             transform: translateY(100%);
             transition: transform 0.4s ease;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .cart-bar.visible {
@@ -238,116 +385,673 @@
 
         .cart-info {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             align-items: center;
         }
 
         .cart-count {
-            background-color: #b59410;
-            color: #fff;
-            padding: 5px 12px;
+            background-color: var(--gold);
+            color: #16140f;
+            padding: 5px 13px;
             border-radius: 15px;
-            font-weight: bold;
-            font-size: 0.9rem;
+            font-weight: 800;
+            font-size: 0.85rem;
         }
 
         .cart-total {
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
-            font-weight: bold;
+            font-weight: 700;
+            color: var(--gold-bright);
+        }
+
+        .view-cart-btn {
+            background: transparent;
+            color: var(--ink);
+            border: 1px solid var(--hairline-strong);
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .view-cart-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-bright);
         }
 
         .checkout-btn {
-            background-color: #2e7d32;
-            color: white;
+            background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+            color: #16140f;
             border: none;
-            padding: 12px 30px;
-            font-size: 1rem;
-            font-weight: bold;
+            padding: 11px 26px;
+            font-size: 0.9rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
             cursor: pointer;
-            border-radius: 4px;
-            transition: 0.3s;
+            border-radius: 6px;
+            transition: 0.25s;
         }
 
         .checkout-btn:hover {
-            background-color: #1b5e20;
+            filter: brightness(1.1);
         }
+
+        /* ================= CART DRAWER (side panel) ================= */
         #cartModal {
-    border-radius: 20px !important;
-    border: none !important;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
-    padding: 30px !important;
-}
+            position: fixed;
+            inset: 0;
+            display: none;
+            background: rgba(0,0,0,0.55);
+            z-index: 9999;
+        }
 
-#cartModal h3 {
-    color: #b59410;
-    margin-bottom: 20px;
-    font-size: 1.5rem;
-}
+        #cartModal.open { display: block; }
 
-/* تنسيق زر الإغلاق */
-.close-btn {
-    width: 100%;
-    background: #111;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 10px;
-    margin-top: 20px;
-    cursor: pointer;
-    font-weight: bold;
-}
-#cartModal {
-    position: fixed;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    border-radius: 0 !important; /* بدون زوايا دائرية على الموبايل */
-    padding: 20px !important;
-    box-sizing: border-box;
-    overflow-y: auto;
-}
+        .cart-sheet {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            max-width: 400px;
+            background: linear-gradient(180deg, #17150f 0%, #0e0d0a 100%);
+            border-left: 1px solid var(--hairline-strong);
+            padding: 22px 22px 90px;
+            overflow-y: auto;
+            box-shadow: -20px 0 50px rgba(0,0,0,0.55);
+            transform: translateX(100%);
+            transition: transform 0.35s ease;
+        }
 
-/* تحسين شكل جدول المنتجات داخل الموبايل */
-#cartItemsList div {
-    font-size: 0.85rem !important; /* تصغير الخط قليلاً ليناسب الشاشة */
-}
+        #cartModal.open .cart-sheet {
+            transform: translateX(0);
+        }
 
-/* تنسيق أزرار الكمية */
-#cartItemsList button {
-    padding: 5px 12px !important;
-    font-size: 1rem !important;
-}
-/* تنسيق بطاقة المنتج في السلة */
-.cart-item-card {
-    background: #f8f5f2;
-    border: 1px solid #e0dcd9;
-    border-radius: 12px;
-    padding: 15px;
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-}
+        .cart-sheet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--hairline);
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
 
-.cart-item-row {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+        .cart-sheet-header h3 {
+            margin: 0;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--ink);
+            border: none;
+            padding: 0;
+        }
 
-.cart-item-img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    border-radius: 8px;
-}
+        .cart-sheet-header h3 span {
+            color: var(--gold-bright);
+            letter-spacing: 2px;
+        }
 
-.total-section {
-    background: #f8f5f2;
-    padding: 20px;
-    border-radius: 12px;
-    margin-top: 20px;
-}
+        .cart-sheet-close {
+            background: transparent;
+            border: 1px solid var(--hairline);
+            color: var(--ink-muted);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .cart-sheet-close:hover {
+            border-color: var(--gold);
+            color: var(--gold-bright);
+        }
+
+        .cart-empty {
+            text-align: center;
+            color: var(--ink-faint);
+            padding: 40px 10px;
+            font-size: 0.95rem;
+        }
+
+        .close-btn {
+            width: 100%;
+            background: transparent;
+            color: var(--ink-muted);
+            border: 1px solid var(--hairline);
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            font-family: 'Cairo', sans-serif;
+            transition: 0.25s;
+        }
+
+        .close-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-bright);
+        }
+
+        .cart-item-card {
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-item-row {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .cart-item-img {
+            width: 56px;
+            height: 56px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid var(--hairline);
+            background: #0f0e0b;
+        }
+
+        .cart-item-name {
+            font-weight: 700;
+            color: var(--ink);
+            font-size: 0.92rem;
+        }
+
+        .cart-item-code {
+            font-size: 0.75rem;
+            color: var(--ink-faint);
+            margin-top: 3px;
+        }
+
+        .cart-item-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.15rem;
+            color: var(--ink-faint);
+            line-height: 1;
+            padding: 4px;
+            transition: 0.2s;
+        }
+
+        .cart-item-remove:hover { color: #d9736b; }
+
+        .cart-item-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+
+        .qty-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .qty-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid var(--hairline-strong);
+            background: transparent;
+            color: var(--gold-bright);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .qty-btn:hover {
+            background: var(--gold);
+            color: #16140f;
+        }
+
+        .qty-value {
+            min-width: 18px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .cart-item-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            color: var(--gold-bright);
+            font-size: 1.1rem;
+        }
+
+        .total-section {
+            background: var(--surface-2);
+            border: 1px solid var(--hairline);
+            padding: 18px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .total-row span:last-child { color: var(--gold-bright); }
+
+        .total-section hr {
+            border: none;
+            border-top: 1px solid var(--hairline);
+            margin: 12px 0;
+        }
+
+        /* ================= ORDER MODAL ================= */
+        #orderModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #orderModal.open { display: flex; }
+
+        .order-box {
+            width: 100%;
+            max-width: 420px;
+            background: linear-gradient(180deg, #17150f 0%, #0e0d0a 100%);
+            border: 1px solid var(--hairline-strong);
+            padding: 28px 24px;
+            border-radius: 18px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.55);
+        }
+
+        .order-box h3 {
+            text-align: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            color: var(--ink);
+            margin: 0 0 20px;
+            border-bottom: 1px solid var(--hairline);
+            padding-bottom: 14px;
+        }
+
+        .order-input {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            border-radius: 8px;
+            color: var(--ink);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.92rem;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .order-input::placeholder { color: var(--ink-faint); }
+
+        .order-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,106,0.12);
+        }
+
+        .order-note {
+            text-align: center;
+            color: var(--ink-muted);
+            font-size: 0.85rem;
+            margin: 4px 0 16px;
+        }
+
+        .whatsapp-btn {
+            background: #1f3d2c;
+            color: #d8f5df;
+            padding: 12px;
+            border: 1px solid rgba(76,122,90,0.4);
+            width: 100%;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s;
+        }
+
+        .whatsapp-btn:hover {
+            background: #25532f;
+            border-color: #4c7a5a;
+        }
+
+        .order-close {
+            width: 100%;
+            background: transparent;
+            border: 1px solid var(--hairline);
+            color: var(--ink-muted);
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 8px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+        }
+
+        .order-close:hover {
+            border-color: var(--gold);
+            color: var(--gold-bright);
+        }
+
+        .no-results {
+            width: 100%;
+            text-align: center;
+            color: var(--ink-faint);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.95rem;
+            padding: 50px 20px;
+        }
+
+        /* ============ card reveal on scroll ============ */
+        .card {
+            opacity: 0;
+            transform: translateY(18px);
+        }
+
+        .card.in-view {
+            animation: cardReveal 0.6s ease forwards;
+        }
+
+        @keyframes cardReveal {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============ logo shimmer (signature touch) ============ */
+        header .logo {
+            background: linear-gradient(100deg, var(--gold-bright) 30%, #fff6de 45%, var(--gold-bright) 60%);
+            background-size: 250% 100%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: logoShimmer 4.5s ease-in-out 0.3s 1;
+        }
+
+        @keyframes logoShimmer {
+            0% { background-position: 200% 0; }
+            60% { background-position: -50% 0; }
+            100% { background-position: -50% 0; }
+        }
+
+        /* ============ add-to-cart toast ============ */
+        #toast {
+            position: fixed;
+            top: 22px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-16px);
+            background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+            color: #16140f;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 0.88rem;
+            padding: 12px 24px;
+            border-radius: 30px;
+            box-shadow: 0 10px 28px rgba(0,0,0,0.4);
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        #toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .cart-count.bump {
+            animation: cartBump 0.35s ease;
+        }
+
+        @keyframes cartBump {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.35); }
+            100% { transform: scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .card, header .logo, #toast, .cart-count { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(11,10,8,0.55);
+            border: 1px solid var(--hairline);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 11;
+            transition: 0.2s;
+        }
+
+        .wishlist-btn svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--ink-muted);
+            fill: none;
+            transition: 0.2s;
+        }
+
+        .wishlist-btn:hover {
+            border-color: var(--gold);
+        }
+
+        .wishlist-btn:hover svg {
+            stroke: var(--gold-bright);
+        }
+
+        .wishlist-btn.active svg {
+            fill: #d9736b;
+            stroke: #d9736b;
+        }
+
+        .filter-btn.wishlist-filter.active {
+            background-color: #d9736b;
+            border-color: #d9736b;
+            color: #fff;
+        }
+
+        /* ================= QUICK VIEW MODAL ================= */
+        #quickViewModal {
+            position: fixed;
+            inset: 0;
+            display: none;
+            background: rgba(0,0,0,0.65);
+            z-index: 9998;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #quickViewModal.open { display: flex; }
+
+        .qv-box {
+            width: 100%;
+            max-width: 640px;
+            max-height: 90vh;
+            overflow-y: auto;
+            background: linear-gradient(180deg, #17150f 0%, #0e0d0a 100%);
+            border: 1px solid var(--hairline-strong);
+            border-radius: 16px;
+            padding: 26px;
+            position: relative;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+
+        .qv-close {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--hairline);
+            background: transparent;
+            color: var(--ink-muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            z-index: 2;
+        }
+
+        .qv-close:hover {
+            border-color: var(--gold);
+            color: var(--gold-bright);
+        }
+
+        .qv-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .qv-img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            background: #0f0e0b;
+            border: 1px solid var(--hairline);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .qv-brand {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.78rem;
+            color: var(--gold);
+            letter-spacing: 2px;
+            font-weight: 700;
+            margin: 0 0 6px;
+        }
+
+        .qv-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin: 0 0 10px;
+        }
+
+        .qv-tags {
+            color: var(--ink-muted);
+            font-size: 0.85rem;
+            margin-bottom: 14px;
+        }
+
+        .qv-desc {
+            color: var(--ink-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 18px;
+        }
+
+        .qv-price {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
+            color: var(--gold-bright);
+            margin-bottom: 16px;
+        }
+
+        .qv-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .qv-actions .add-to-cart-btn { width: auto; flex: 1; }
+
+        @media (min-width: 640px) {
+            .qv-content { flex-direction: row; align-items: flex-start; }
+            .qv-img { width: 240px; flex-shrink: 0; height: 240px; }
+        }
+
+        /* ================= BACK TO TOP ================= */
+        #backToTop {
+            position: fixed;
+            bottom: 96px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--surface);
+            border: 1px solid var(--hairline-strong);
+            color: var(--gold-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 900;
+            opacity: 0;
+            pointer-events: none;
+            transform: translateY(10px);
+            transition: 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.35);
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        #backToTop:hover {
+            border-color: var(--gold);
+        }
+
+        #backToTop svg {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+        }
+
+        @media (max-width: 600px) {
+            header { padding: 42px 16px 28px; }
+            header .logo { font-size: 2.5rem; letter-spacing: 7px; }
+            .card { width: 100%; max-width: 420px; }
+            .products-grid { gap: 16px; }
+            .cart-bar { padding: 12px 14px; }
+            .checkout-btn { padding: 10px 18px; font-size: 0.85rem; }
+        }
     </style>
 </head>
 <body>
@@ -359,12 +1063,20 @@
     </header>
 
     <div class="controls-container">
-        <input type="text" id="searchInput" class="search-box" placeholder="ابحثي عن عطركِ المفضل أو الماركة..." onkeyup="filterProducts()">
+        <div class="search-wrap" id="searchWrap">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="11" cy="11" r="7" stroke-width="1.6"/>
+                <line x1="16.2" y1="16.2" x2="21" y2="21" stroke-width="1.6" stroke-linecap="round"/>
+            </svg>
+            <input type="text" id="searchInput" class="search-box" placeholder="ابحث/ي عن عطرك المفضل أو الماركة..." onkeyup="filterProducts()">
+            <button type="button" class="search-clear" id="searchClear" onclick="clearSearch()">&times;</button>
+        </div>
         
         <div class="filter-buttons">
             <button class="filter-btn active" onclick="filterGender('all', this)">الكل</button>
             <button class="filter-btn" onclick="filterGender('femme', this)">تشكيلة النساء</button>
             <button class="filter-btn" onclick="filterGender('homme', this)">تشكيلة الرجال</button>
+            <button class="filter-btn wishlist-filter" id="wishlistFilterBtn" onclick="toggleWishlistFilter(this)">♥ المفضلة</button>
         </div>
     </div>
 
@@ -374,7 +1086,7 @@
             
             <div class="card" data-name="giorgio armani si parfum" data-brand="giorgio armani">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/si.jpeg" alt="Sì Parfum">
+                <img class="product-img" src="images/si.jpeg" alt="Sì Parfum" loading="lazy" decoding="async">
                 <h3>GIORGIO ARMANI</h3>
                 <h4>Sì Parfum</h4>
                 <p class="tags">Chypre, Floral, Vanilla, Leather</p>
@@ -385,7 +1097,7 @@
 
             <div class="card" data-name="kayali fragrances lovefest cherry 48" data-brand="kayali fragrances">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/cherry.jpeg" alt="Lovefest Cherry">
+                <img class="product-img" src="images/cherry.jpeg" alt="Lovefest Cherry" loading="lazy" decoding="async">
                 <h3>KAYALI FRAGRANCES</h3>
                 <h4>Lovefest Cherry | 48</h4>
                 <p class="tags">Woody, Amber, Cherry, Sweet</p>
@@ -396,7 +1108,7 @@
 
             <div class="card" data-name="xerjoff neorio" data-brand="xerjoff">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/neorio.jpeg" alt="NeoRio">
+                <img class="product-img" src="images/neorio.jpeg" alt="NeoRio" loading="lazy" decoding="async">
                 <h3>XERJOFF</h3>
                 <h4>NeoRio</h4>
                 <p class="tags">Oriental, Sweet, Boozy, Warm Spicy</p>
@@ -407,7 +1119,7 @@
 
             <div class="card" data-name="kayali fragrances vanilla 28" data-brand="kayali fragrances">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/vanilla28.jpeg" alt="Vanilla 28">
+                <img class="product-img" src="images/vanilla28.jpeg" alt="Vanilla 28" loading="lazy" decoding="async">
                 <h3>KAYALI FRAGRANCES</h3>
                 <h4>Vanilla | 28</h4>
                 <p class="tags">Sweet, Vanilla, Amber, Powdery</p>
@@ -418,7 +1130,7 @@
 
             <div class="card" data-name="kayali fragrances lemon sugar 14" data-brand="kayali fragrances">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/lemonsugar.jpeg" alt="Lemon Sugar 14">
+                <img class="product-img" src="images/lemonsugar.jpeg" alt="Lemon Sugar 14" loading="lazy" decoding="async">
                 <h3>KAYALI FRAGRANCES</h3>
                 <h4>Lemon Sugar | 14</h4>
                 <p class="tags">Citrus, Sweet, Vanilla, Fresh</p>
@@ -429,7 +1141,7 @@
 
             <div class="card" data-name="yves saint laurent libre intense" data-brand="yves saint laurent">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/libreintense.jpeg" alt="Libre Intense">
+                <img class="product-img" src="images/libreintense.jpeg" alt="Libre Intense" loading="lazy" decoding="async">
                 <h3>YVES SAINT LAURENT</h3>
                 <h4>Libre Intense</h4>
                 <p class="tags">Vanilla, Citrus, Lavender, Amber</p>
@@ -440,7 +1152,7 @@
 
             <div class="card" data-name="yves saint laurent libre le parfum" data-brand="yves saint laurent">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/libreleparfum.jpeg" alt="Libre Le Parfum">
+                <img class="product-img" src="images/libreleparfum.jpeg" alt="Libre Le Parfum" loading="lazy" decoding="async">
                 <h3>YVES SAINT LAURENT</h3>
                 <h4>Libre Le Parfum</h4>
                 <p class="tags">Warm Spicy, Sweet, Vanilla, Honey</p>
@@ -451,7 +1163,7 @@
 
             <div class="card" data-name="jean paul gaultier la belle le parfum" data-brand="jean paul gaultier">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/labelle.jpeg" alt="La Belle Le Parfum">
+                <img class="product-img" src="images/labelle.jpeg" alt="La Belle Le Parfum" loading="lazy" decoding="async">
                 <h3>JEAN PAUL GAULTIER</h3>
                 <h4>La Belle Le Parfum</h4>
                 <p class="tags">Vanilla, Sweet, Fruity, Amber</p>
@@ -462,7 +1174,7 @@
 
             <div class="card" data-name="carolina herrera good girl" data-brand="carolina herrera">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/goodgirl.jpeg" alt="Good Girl">
+                <img class="product-img" src="images/goodgirl.jpeg" alt="Good Girl" loading="lazy" decoding="async">
                 <h3>CAROLINA HERRERA</h3>
                 <h4>Good Girl</h4>
                 <p class="tags">Sweet, White Floral, Cacao, Vanilla</p>
@@ -473,7 +1185,7 @@
 
             <div class="card" data-name="burberry my burberry blush" data-brand="burberry">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/burberryblush.jpeg" alt="My Burberry Blush">
+                <img class="product-img" src="images/burberryblush.jpeg" alt="My Burberry Blush" loading="lazy" decoding="async">
                 <h3>BURBERRY</h3>
                 <h4>My Burberry Blush</h4>
                 <p class="tags">Fruity, Floral, Fresh, Rose</p>
@@ -484,7 +1196,7 @@
 
             <div class="card" data-name="xerjoff erbapura" data-brand="xerjoff">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/erbapura.jpeg" alt="Erba Pura">
+                <img class="product-img" src="images/erbapura.jpeg" alt="Erba Pura" loading="lazy" decoding="async">
                 <h3>XERJOFF</h3>
                 <h4>Erba Pura</h4>
                 <p class="tags">Fruity, Citrus, Sweet, Amber</p>
@@ -495,7 +1207,7 @@
 
             <div class="card" data-name="xerjoff torino21" data-brand="xerjoff">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/torino.jpeg" alt="Torino21">
+                <img class="product-img" src="images/torino.jpeg" alt="Torino21" loading="lazy" decoding="async">
                 <h3>XERJOFF</h3>
                 <h4>Torino21</h4>
                 <p class="tags">Aromatic, Green, Citrus, Fresh Spicy, Mint</p>
@@ -507,7 +1219,7 @@
 
              <div class="card" data-name="maison francis kurkdjian baccarat rouge 540 extrait" data-brand="maison francis kurkdjian">
                    <span class="status-badge">متوفر الآن</span>
-                  <img class="product-img" src="images/baccarat.jpeg" alt="Baccarat Rouge 540 Extrait">
+                  <img class="product-img" src="images/baccarat.jpeg" alt="Baccarat Rouge 540 Extrait" loading="lazy" decoding="async">
                   <h3>MAISON FRANCIS KURKDJIAN</h3>
                   <h4>Baccarat Rouge 540 Extrait</h4>
                   <p class="tags">Amber, Almond, Woody, Warm Spicy, Saffron</p>
@@ -518,7 +1230,7 @@
 
             <div class="card" data-name="prada paradoxe" data-brand="prada">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/prada.jpeg" alt="Prada Paradoxe">
+    <img class="product-img" src="images/prada.jpeg" alt="Prada Paradoxe" loading="lazy" decoding="async">
     <h3>PRADA</h3>
     <h4>Paradoxe</h4>
     <p class="tags">White Floral, Citrus, Sweet, Vanilla, Amber</p>
@@ -528,7 +1240,7 @@
 </div>
             <div class="card" data-name="jean paul gaultier scandal" data-brand="jean paul gaultier">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/scandal.jpeg" alt="Scandal">
+                <img class="product-img" src="images/scandal.jpeg" alt="Scandal" loading="lazy" decoding="async">
                 <h3>JEAN PAUL GAULTIER</h3>
                 <h4>Scandal</h4>
                 <p class="tags">Honey, Sweet, Citrus, White Floral</p>
@@ -539,7 +1251,7 @@
 
             <div class="card" data-name="burberry her elixir" data-brand="burberry">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/her.jpeg" alt="Her Elixir">
+    <img class="product-img" src="images/her.jpeg" alt="Her Elixir" loading="lazy" decoding="async">
     <h3>BURBERRY</h3>
     <h4>Her Elixir</h4>
     <p class="tags">Fruity, Sweet, Vanilla, Powdery, Milky</p>
@@ -550,7 +1262,7 @@
 
             <div class="card" data-name="burberry her" data-brand="burberry">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/burberry.jpeg" alt="Burberry Her">
+    <img class="product-img" src="images/burberry.jpeg" alt="Burberry Her" loading="lazy" decoding="async">
     <h3>BURBERRY</h3>
     <h4>Burberry Her</h4>
     <p class="tags">Fruity, Sweet, Woody, Musky</p>
@@ -560,7 +1272,7 @@
 </div>
             <div class="card" data-name="giorgio armani si passione" data-brand="giorgio armani">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/si2.jpeg" alt="Sì Passione">
+    <img class="product-img" src="images/si2.jpeg" alt="Sì Passione" loading="lazy" decoding="async">
     <h3>GIORGIO ARMANI</h3>
     <h4>Sì Passione</h4>
     <p class="tags">Fruity, Rose, Sweet, Floral, Soft Spicy</p>
@@ -575,7 +1287,7 @@
 <!-- Scandal Le Parfum -->
 <div class="card" data-name="jean paul gaultier scandal le parfum" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/scandalle.jpeg" alt="Scandal Le Parfum">
+    <img class="product-img" src="images/scandalle.jpeg" alt="Scandal Le Parfum" loading="lazy" decoding="async">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Scandal Le Parfum</h4>
     <p class="tags">Vanilla, Caramel, Sweet, White Floral</p>
@@ -587,7 +1299,7 @@
 <!-- Good Girl Blush -->
 <div class="card" data-name="carolina herrera good girl blush" data-brand="carolina herrera">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/goodblush.jpeg" alt="Good Girl Blush">
+    <img class="product-img" src="images/goodblush.jpeg" alt="Good Girl Blush" loading="lazy" decoding="async">
     <h3>CAROLINA HERRERA</h3>
     <h4>Good Girl Blush</h4>
     <p class="tags">Vanilla, Floral, Powdery, Citrus</p>
@@ -605,7 +1317,7 @@
             
             <div class="card" data-name="prada paradigme" data-brand="prada">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/brada.jpeg" alt="Paradigme">
+    <img class="product-img" src="images/brada.jpeg" alt="Paradigme" loading="lazy" decoding="async">
     <h3>PRADA</h3>
     <h4>Paradigme</h4>
     <p class="tags">Amber, Powdery, Fresh Spicy, Citrus, Woody</p>
@@ -616,7 +1328,7 @@
 
 <div class="card" data-name="xerjoff erba pura" data-brand="xerjoff">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/erbapura.jpeg" alt="Erba Pura">
+    <img class="product-img" src="images/erbapura.jpeg" alt="Erba Pura" loading="lazy" decoding="async">
     <h3>XERJOFF</h3>
     <h4>Erba Pura</h4>
     <p class="tags">Fruity, Sweet, Citrus, Amber, Musky</p>
@@ -627,7 +1339,7 @@
 
 <div class="card" data-name="xerjoff torino21" data-brand="xerjoff">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/torino.jpeg" alt="Torino21">
+    <img class="product-img" src="images/torino.jpeg" alt="Torino21" loading="lazy" decoding="async">
     <h3>XERJOFF</h3>
     <h4>Torino21</h4>
     <p class="tags">Aromatic, Green, Citrus, Fresh Spicy, Mint</p>
@@ -638,7 +1350,7 @@
 
 <div class="card" data-name="valentino uomo intense" data-brand="valentino">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/uomo.jpeg" alt="Uomo Intense">
+    <img class="product-img" src="images/uomo.jpeg" alt="Uomo Intense" loading="lazy" decoding="async">
     <h3>VALENTINO</h3>
     <h4>Uomo Intense</h4>
     <p class="tags">Powdery, Iris, Leather, Vanilla, Violet</p>
@@ -649,7 +1361,7 @@
 
 <div class="card" data-name="rabanne invictus" data-brand="rabanne">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/inva.jpeg" alt="Invictus">
+    <img class="product-img" src="images/inva.jpeg" alt="Invictus" loading="lazy" decoding="async">
     <h3>RABANNE</h3>
     <h4>Invictus</h4>
     <p class="tags">Citrus, Marine, Fresh Spicy, Aromatic</p>
@@ -660,7 +1372,7 @@
 
 <div class="card" data-name="lattafa khamrah qahwa" data-brand="lattafa perfumes">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/kh.jpeg" alt="Khamrah Qahwa">
+    <img class="product-img" src="images/kh.jpeg" alt="Khamrah Qahwa" loading="lazy" decoding="async">
     <h3>LATTAFA PERFUMES</h3>
     <h4>Khamrah Qahwa</h4>
     <p class="tags">Warm Spicy, Coffee, Vanilla, Amber, Cinnamon</p>
@@ -671,7 +1383,7 @@
 
 <div class="card" data-name="lattafa khamrah" data-brand="lattafa perfumes">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/kh2.jpeg" alt="Khamrah">
+    <img class="product-img" src="images/kh2.jpeg" alt="Khamrah" loading="lazy" decoding="async">
     <h3>LATTAFA PERFUMES</h3>
     <h4>Khamrah</h4>
     <p class="tags">Sweet, Warm Spicy, Amber, Vanilla</p>
@@ -682,7 +1394,7 @@
 
 <div class="card" data-name="lattafa khamrah dukhan" data-brand="lattafa perfumes">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/kh3.jpeg" alt="Khamrah Dukhan">
+    <img class="product-img" src="images/kh3.jpeg" alt="Khamrah Dukhan" loading="lazy" decoding="async">
     <h3>LATTAFA PERFUMES</h3>
     <h4>Khamrah Dukhan</h4>
     <p class="tags">Smoky, Woody, Sweet, Warm Spicy, Amber</p>
@@ -693,7 +1405,7 @@
 
 <div class="card" data-name="tom ford tobacco vanille" data-brand="tom ford">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/top.jpeg" alt="Tobacco Vanille">
+    <img class="product-img" src="images/top.jpeg" alt="Tobacco Vanille" loading="lazy" decoding="async">
     <h3>TOM FORD</h3>
     <h4>Tobacco Vanille</h4>
     <p class="tags">Sweet, Tobacco, Vanilla, Warm Spicy, Woody</p>
@@ -704,7 +1416,7 @@
 
 <div class="card" data-name="rabanne million gold" data-brand="rabanne">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/mill.jpeg" alt="Million Gold">
+    <img class="product-img" src="images/mill.jpeg" alt="Million Gold" loading="lazy" decoding="async">
     <h3>RABANNE</h3>
     <h4>Million Gold</h4>
     <p class="tags">Citrus, Warm Spicy, Woody, Amber</p>
@@ -715,7 +1427,7 @@
 <!-- 11. YSL - MYSLF -->
 <div class="card" data-name="yves saint laurent myslf" data-brand="yves saint laurent">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/myslf.jpeg" alt="MYSLF">
+    <img class="product-img" src="images/myslf.jpeg" alt="MYSLF" loading="lazy" decoding="async">
     <h3>YVES SAINT LAURENT</h3>
     <h4>MYSLF</h4>
     <p class="tags">White Floral, Citrus, Woody, Fresh, Amber</p>
@@ -727,7 +1439,7 @@
 <!-- 12. JPG - Ultra Male -->
 <div class="card" data-name="jean paul gaultier ultra male" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/ultra.jpeg" alt="Ultra Male">
+    <img class="product-img" src="images/ultra.jpeg" alt="Ultra Male" loading="lazy" decoding="async">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Ultra Male</h4>
     <p class="tags">Sweet, Vanilla, Fruity, Warm Spicy</p>
@@ -739,7 +1451,7 @@
 <!-- 13. JPG - Le Male Le Parfum -->
 <div class="card" data-name="jean paul gaultier le male le parfum" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/lemale.jpeg" alt="Le Male Le Parfum">
+    <img class="product-img" src="images/lemale.jpeg" alt="Le Male Le Parfum" loading="lazy" decoding="async">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Le Male Le Parfum</h4>
     <p class="tags">Vanilla, Warm Spicy, Aromatic, Powdery, Lavender</p>
@@ -751,7 +1463,7 @@
 <!-- 14. JPG - Le Beau Le Parfum -->
 <div class="card" data-name="jean paul gaultier le beau le parfum" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/le.jpeg" alt="Le Beau Le Parfum">
+    <img class="product-img" src="images/le.jpeg" alt="Le Beau Le Parfum" loading="lazy" decoding="async">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Le Beau Le Parfum</h4>
     <p class="tags">Coconut, Sweet, Vanilla, Tropical</p>
@@ -763,7 +1475,7 @@
 <!-- 15. Rabanne - Invictus Legend -->
 <div class="card" data-name="rabanne invictus legend" data-brand="rabanne">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/inv.jpeg" alt="Invictus Legend">
+    <img class="product-img" src="images/inv.jpeg" alt="Invictus Legend" loading="lazy" decoding="async">
     <h3>RABANNE</h3>
     <h4>Invictus Legend</h4>
     <p class="tags">Aromatic, Marine, Salty, Amber, Citrus</p>
@@ -775,7 +1487,7 @@
 <!-- 16. Dior - Sauvage -->
 <div class="card" data-name="dior sauvage" data-brand="dior">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/sau.jpeg" alt="Sauvage">
+    <img class="product-img" src="images/sau.jpeg" alt="Sauvage" loading="lazy" decoding="async">
     <h3>DIOR</h3>
     <h4>Sauvage</h4>
     <p class="tags">Fresh Spicy, Citrus, Amber, Aromatic, Woody</p>
@@ -787,7 +1499,7 @@
 <!-- 17. Versace - Eros -->
 <div class="card" data-name="versace eros" data-brand="versace">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/eros.jpeg" alt="Eros">
+    <img class="product-img" src="images/eros.jpeg" alt="Eros" loading="lazy" decoding="async">
     <h3>VERSACE</h3>
     <h4>Eros</h4>
     <p class="tags">Vanilla, Aromatic, Green, Fresh Spicy</p>
@@ -799,7 +1511,7 @@
 <!-- 18. Chanel - Bleu de Chanel -->
 <div class="card" data-name="chanel bleu de chanel" data-brand="chanel">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/bleu.jpeg" alt="Bleu de Chanel">
+    <img class="product-img" src="images/bleu.jpeg" alt="Bleu de Chanel" loading="lazy" decoding="async">
     <h3>CHANEL</h3>
     <h4>Bleu de Chanel</h4>
     <p class="tags">Citrus, Woody, Amber, Warm Spicy, Incense</p>
@@ -811,7 +1523,7 @@
 <!-- 19. Giorgio Armani - Stronger With You Absolutely -->
 <div class="card" data-name="giorgio armani stronger with you absolutely" data-brand="giorgio armani">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/swy.jpeg" alt="Stronger With You Absolutely">
+    <img class="product-img" src="images/swy.jpeg" alt="Stronger With You Absolutely" loading="lazy" decoding="async">
     <h3>GIORGIO ARMANI</h3>
     <h4>SWY Absolutely</h4>
     <p class="tags">Sweet, Amber, Vanilla, Woody, Boozy, Warm Spicy</p>
@@ -828,15 +1540,15 @@
         <span class="cart-total" id="cartTotal">إجمالي: 0 EGP</span>
     </div>
     <div style="display: flex; gap: 10px;">
-        <button class="filter-btn" style="background:#fff; padding: 5px 15px;" onclick="openCartModal()">عرض السلة</button>
-        <button class="checkout-btn" onclick="document.getElementById('orderModal').style.display='block'">إتمام الطلب</button>
+        <button class="view-cart-btn" onclick="openCartModal()">عرض السلة</button>
+        <button class="checkout-btn" onclick="openOrderModal()">إتمام الطلب</button>
     </div>
 </div>
 
 
     <script>
         
-        let cart = [];
+        let cart = JSON.parse(localStorage.getItem('ora_cart') || '[]');
         const pricePerItem = 450;
 
         // التعديل هنا: أضفنا img كمدخل ثالث
@@ -849,6 +1561,16 @@ function addToCart(name, code, img) {
         cart.push({ name: name, code: code, img: img, quantity: 1 });
     }
     updateCartUI();
+    showToast(name);
+}
+
+function showToast(name) {
+    let toast = document.getElementById('toast');
+    if (!toast) return;
+    toast.textContent = "✓ تمت إضافة " + name;
+    toast.classList.add('show');
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
         function updateCartUI() {
@@ -871,41 +1593,58 @@ function addToCart(name, code, img) {
 function openCartModal() {
     let list = document.getElementById('cartItemsList');
     let totalItemsPrice = cart.reduce((sum, item) => sum + (item.quantity * 450), 0);
-    
+
     list.innerHTML = ""; // تنظيف القائمة
 
-    cart.forEach((item, index) => {
+    if (cart.length === 0) {
+        list.innerHTML = `<div class="cart-empty">السلة فارغة حالياً<br>أضف/ي عطرك المفضل لتبدأ التسوّق</div>`;
+    } else {
+        cart.forEach((item, index) => {
+            list.innerHTML += `
+                <div class="cart-item-card">
+                    <div class="cart-item-row">
+                        <img src="images/${item.img}" class="cart-item-img" onerror="this.src='images/placeholder.jpeg'">
+                        <div style="flex:1;">
+                            <div class="cart-item-name">${item.name}</div>
+                            <div class="cart-item-code">كود: ${item.code}</div>
+                        </div>
+                        <button onclick="removeItem(${index})" class="cart-item-remove">&times;</button>
+                    </div>
+                    <div class="cart-item-footer">
+                        <div class="qty-control">
+                            <button onclick="changeQty(${index}, -1)" class="qty-btn">-</button>
+                            <span class="qty-value">${item.quantity}</span>
+                            <button onclick="changeQty(${index}, 1)" class="qty-btn">+</button>
+                        </div>
+                        <div class="cart-item-price">${item.quantity * 450} EGP</div>
+                    </div>
+                </div>
+            `;
+        });
+
         list.innerHTML += `
-            <div class="cart-item-card">
-                <div class="cart-item-row">
-<img src="images/${item.img}" class="cart-item-img" onerror="this.src='images/placeholder.jpeg'">                    <div style="flex:1;">
-                        <div style="font-weight:bold;">${item.name}</div>
-                        <div style="font-size: 0.8rem; color: #666;">كود: ${item.code}</div>
-                    </div>
-                    <button onclick="removeItem(${index})" style="background:none; border:none; cursor:pointer; font-size:1.2rem;">&times;</button>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px;">
-                    <div style="display:flex; align-items:center; gap:10px;">
-                        <button onclick="changeQty(${index}, -1)" style="padding:5px 10px;">-</button>
-                        <span>${item.quantity}</span>
-                        <button onclick="changeQty(${index}, 1)" style="padding:5px 10px;">+</button>
-                    </div>
-                    <div style="font-weight:bold;">${item.quantity * 450} EGP</div>
-                </div>
+            <div class="total-section">
+                <div class="total-row"><span>الإجمالي</span><span>${totalItemsPrice} EGP</span></div>
+                <hr>
+                <button class="checkout-btn" style="width:100%;" onclick="openOrderModal()">إتمام الطلب</button>
             </div>
         `;
-    });
+    }
 
-    // إضافة ملخص الطلب
-    list.innerHTML += `
-        <div class="total-section">
-            <div style="display:flex; justify-content:space-between;"><span>الإجمالي:</span> <span>${totalItemsPrice} EGP</span></div>
-            <hr>
-            <button class="checkout-btn" style="width:100%; margin-top:10px;" onclick="document.getElementById('orderModal').style.display='block'">إتمام الطلب</button>
-        </div>
-    `;
-    
-    document.getElementById('cartModal').style.display = 'block';
+    document.getElementById('cartModal').classList.add('open');
+}
+
+function closeCartModal() {
+    document.getElementById('cartModal').classList.remove('open');
+}
+
+function openOrderModal() {
+    if (cart.length === 0) return;
+    document.getElementById('orderModal').classList.add('open');
+}
+
+function closeOrderModal() {
+    document.getElementById('orderModal').classList.remove('open');
 }
 
 // تعديل الكمية
@@ -927,12 +1666,17 @@ function removeItem(index) {
 
 // تحديث شكل السلة السفلي
 function updateCartUI() {
+    localStorage.setItem('ora_cart', JSON.stringify(cart));
     const cartBar = document.getElementById('cartBar');
     const cartCount = document.getElementById('cartCount');
     const cartTotal = document.getElementById('cartTotal');
-    
+
     let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
     let totalPrice = totalItems * 450;
+
+    cartCount.classList.remove('bump');
+    void cartCount.offsetWidth; // إعادة تشغيل الأنيميشن
+    cartCount.classList.add('bump');
 
     if (totalItems > 0) {
         cartBar.classList.add('visible');
@@ -946,9 +1690,9 @@ function updateCartUI() {
         function checkoutWhatsApp() {
             if (cart.length === 0) return;
             
-            // الأرقام الخاصة بكِ (يمكنكِ تعديل الرقم الثاني بوضع رقمكِ الحقيقي بدلاً من الاكسات)
+            // الأرقام الخاصة بك (يمكنك تعديل الرقم الثاني بوضع رقمك الحقيقي بدلاً من الاكسات)
             let phone1 = "201030488495"; 
-            let phone2 = "201034059582"; // ضعي رقمكِ الثاني هنا
+            let phone2 = "201034059582"; // ضع/ي رقمك الثاني هنا
             
             // سؤال الزبون لاختيار الرقم المفضل له
             let choice = prompt("اختر رقم الواتساب لإرسال الطلب:\n1 - الرقم الأول\n2 - الرقم الثاني");
@@ -976,15 +1720,42 @@ function updateCartUI() {
         function filterProducts() {
             let input = document.getElementById('searchInput').value.toLowerCase();
             let cards = document.querySelectorAll('.card');
+            let visibleCount = 0;
+
+            document.getElementById('searchWrap').classList.toggle('has-text', input.length > 0);
+
             cards.forEach(card => {
                 let name = card.getAttribute('data-name');
                 let brand = card.getAttribute('data-brand');
                 if (name && (name.includes(input) || brand.includes(input))) {
                     card.classList.remove('hidden');
+                    visibleCount++;
                 } else if (name) {
                     card.classList.add('hidden');
                 }
             });
+
+            document.querySelectorAll('.products-grid').forEach(grid => {
+                let existing = grid.querySelector('.no-results');
+                let gridHasVisible = grid.querySelector('.card:not(.hidden)');
+                if (!gridHasVisible && input.length > 0) {
+                    if (!existing) {
+                        let msg = document.createElement('div');
+                        msg.className = 'no-results';
+                        msg.textContent = 'لا توجد نتائج مطابقة لبحثك';
+                        grid.appendChild(msg);
+                    }
+                } else if (existing) {
+                    existing.remove();
+                }
+            });
+        }
+
+        function clearSearch() {
+            let inputEl = document.getElementById('searchInput');
+            inputEl.value = '';
+            inputEl.focus();
+            filterProducts();
         }
 
         function filterGender(gender, button) {
@@ -1005,7 +1776,7 @@ function updateCartUI() {
         }
        function checkoutWhatsApp() {
     // إظهار نافذة البيانات
-    document.getElementById('orderModal').style.display = 'block';
+    openOrderModal();
 }
 
 function sendToWhatsApp(phoneNumber) {
@@ -1018,7 +1789,7 @@ function sendToWhatsApp(phoneNumber) {
     let total = document.getElementById('cartTotal').innerText;
     
     if(!name || !address || !phone) {
-        alert("من فضلك أكمل البيانات");
+        alert("من فضلك أكمل/ي البيانات");
         return;
     }
 
@@ -1041,36 +1812,195 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
     </script>
     <!-- نافذة عرض السلة -->
 <!-- نافذة عرض السلة -->
-<div id="cartModal" style="display:none; background:white; z-index:9999;">
-    <!-- استبدلنا النص، وأضفنا تنسيقاً للخط -->
-<h3 style="
-    text-align: center; 
-    margin: 20px 0; 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    font-size: 1.8rem; 
-    font-weight: 900; 
-    color: #1a1a1a; 
-    border-bottom: 2px solid #b59410; 
-    padding-bottom: 10px; 
-    line-height: 1.4;">
-    سلة مشتريات <span style="color: #b59410; letter-spacing: 2px;">ORA-PERFUME</span>
-</h3>    
-    <div id="cartItemsList" style="margin-bottom: 20px;"></div>
-    
-    <button class="close-btn" onclick="document.getElementById('cartModal').style.display='none'">إغلاق السلة</button>
+<div id="cartModal" onclick="if(event.target===this) closeCartModal()">
+    <div class="cart-sheet">
+        <div class="cart-sheet-header">
+            <h3>سلة <span>ORA</span></h3>
+            <button class="cart-sheet-close" onclick="closeCartModal()">&times;</button>
+        </div>
+        <div id="cartItemsList"></div>
+        <button class="close-btn" onclick="closeCartModal()">إغلاق السلة</button>
+    </div>
 </div>
-    <div id="orderModal" style="display:none; position:fixed; top:10%; left:10%; width:80%; background:white; padding:20px; border:2px solid #333; z-index:9999; border-radius:15px; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
-    <h3 style="text-align:center;">بيانات التوصيل</h3>
-    <input type="text" id="customerName" placeholder="الاسم" style="width:100%; margin-bottom:10px; padding:8px;">
-    <input type="text" id="customerAddress" placeholder="العنوان بالتفصيل" style="width:100%; margin-bottom:10px; padding:8px;">
-    <input type="text" id="customerPhone" placeholder="رقم الهاتف" style="width:100%; margin-bottom:10px; padding:8px;">
-    
-    <p style="text-align:center;">اختر رقم الواتساب لإرسال الطلب
-        للاوردرات المستعجله اختر 2:</p>
-    <button onclick="sendToWhatsApp('201030488495')" style="background:#25D366; color:white; padding:10px; border:none; width:100%; margin-bottom:5px; border-radius:5px;">إرسال للرقم الأول</button>
-    <button onclick="sendToWhatsApp('201123081733')" style="background:#128C7E; color:white; padding:10px; border:none; width:100%; border-radius:5px;">إرسال للرقم الثاني</button>
-    <br><br>
-    <button onclick="document.getElementById('orderModal').style.display='none'" style="width:100%; background:#ccc; border:none; padding:5px;">إغلاق</button>
+
+<div id="orderModal" onclick="if(event.target===this) closeOrderModal()">
+    <div class="order-box">
+        <h3>بيانات التوصيل</h3>
+        <input type="text" id="customerName" class="order-input" placeholder="الاسم">
+        <input type="text" id="customerAddress" class="order-input" placeholder="العنوان بالتفصيل">
+        <input type="text" id="customerPhone" class="order-input" placeholder="رقم الهاتف">
+
+        <p class="order-note">اختر/ي رقم الواتساب لإرسال الطلب — للأوردرات المستعجلة اختر/ي الثاني</p>
+        <button onclick="sendToWhatsApp('201030488495')" class="whatsapp-btn">إرسال للرقم الأول</button>
+        <button onclick="sendToWhatsApp('201123081733')" class="whatsapp-btn">إرسال للرقم الثاني</button>
+        <button onclick="closeOrderModal()" class="order-close">إغلاق</button>
+    </div>
 </div>
+
+<div id="quickViewModal" onclick="if(event.target===this) closeQuickView()">
+    <div class="qv-box">
+        <button class="qv-close" onclick="closeQuickView()">&times;</button>
+        <div class="qv-content">
+            <img id="qvImg" class="qv-img" src="" alt="">
+            <div>
+                <p class="qv-brand" id="qvBrand"></p>
+                <h3 class="qv-name" id="qvName"></h3>
+                <p class="qv-tags" id="qvTags"></p>
+                <p class="qv-desc" id="qvDesc"></p>
+                <div class="qv-price" id="qvPrice"></div>
+                <div class="qv-actions">
+                    <button class="add-to-cart-btn" id="qvAddBtn">إضافة إلى الطلب</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button id="backToTop" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="الرجوع لأعلى الصفحة">
+    <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
+<div id="toast"></div>
+
+<script>
+    // استرجاع حالة السلة المحفوظة عند فتح الصفحة
+    updateCartUI();
+
+    // ================= المفضلة (Wishlist) =================
+    let wishlist = JSON.parse(localStorage.getItem('ora_wishlist') || '[]');
+    let wishlistFilterActive = false;
+
+    function extractCode(card) {
+        const btn = card.querySelector('.add-to-cart-btn');
+        const attr = btn.getAttribute('onclick') || '';
+        const match = attr.match(/addToCart\('([^']*)',\s*'([^']*)'/);
+        return match ? match[2] : null;
+    }
+
+    document.querySelectorAll('.card').forEach(card => {
+        const code = extractCode(card);
+        if (!code) return;
+        card.dataset.code = code;
+
+        const heart = document.createElement('button');
+        heart.type = 'button';
+        heart.className = 'wishlist-btn' + (wishlist.includes(code) ? ' active' : '');
+        heart.setAttribute('aria-label', 'إضافة إلى المفضلة');
+        heart.innerHTML = '<svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M12 20s-7-4.35-9.5-8.5C0.8 8.2 2.2 5 5.5 5c1.9 0 3.3 1 4.5 2.5C11.2 6 12.6 5 14.5 5 17.8 5 19.2 8.2 21.5 11.5 19 15.65 12 20 12 20z"/></svg>';
+        heart.onclick = function(e) {
+            e.stopPropagation();
+            toggleWishlist(code, heart);
+        };
+        card.appendChild(heart);
+
+        // فتح نافذة العرض السريع عند الضغط على الكارت (عدا الأزرار)
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', function(e) {
+            if (e.target.closest('.add-to-cart-btn') || e.target.closest('.wishlist-btn')) return;
+            openQuickView(card);
+        });
+    });
+
+    function toggleWishlist(code, btnEl) {
+        const idx = wishlist.indexOf(code);
+        if (idx > -1) {
+            wishlist.splice(idx, 1);
+            btnEl.classList.remove('active');
+        } else {
+            wishlist.push(code);
+            btnEl.classList.add('active');
+        }
+        localStorage.setItem('ora_wishlist', JSON.stringify(wishlist));
+        if (wishlistFilterActive) applyFilters();
+    }
+
+    function toggleWishlistFilter(btn) {
+        wishlistFilterActive = !wishlistFilterActive;
+        btn.classList.toggle('active', wishlistFilterActive);
+        applyFilters();
+    }
+
+    // ================= البحث + فلتر المفضلة معاً =================
+    window.applyFilters = function() {
+        let input = document.getElementById('searchInput').value.toLowerCase();
+        document.getElementById('searchWrap').classList.toggle('has-text', input.length > 0);
+
+        document.querySelectorAll('.card').forEach(card => {
+            const name = card.getAttribute('data-name');
+            const brand = card.getAttribute('data-brand');
+            const code = card.dataset.code;
+            const matchesSearch = name && (name.includes(input) || brand.includes(input));
+            const matchesWishlist = !wishlistFilterActive || wishlist.includes(code);
+            card.classList.toggle('hidden', !(matchesSearch && matchesWishlist));
+        });
+
+        document.querySelectorAll('.products-grid').forEach(grid => {
+            let existing = grid.querySelector('.no-results');
+            let gridHasVisible = grid.querySelector('.card:not(.hidden)');
+            if (!gridHasVisible) {
+                if (!existing) {
+                    let msg = document.createElement('div');
+                    msg.className = 'no-results';
+                    msg.textContent = wishlistFilterActive ? 'لسه معندكِش/معندكش عطور في المفضلة' : 'لا توجد نتائج مطابقة لبحثك';
+                    grid.appendChild(msg);
+                } else {
+                    existing.textContent = wishlistFilterActive ? 'لسه معندكِش/معندكش عطور في المفضلة' : 'لا توجد نتائج مطابقة لبحثك';
+                }
+            } else if (existing) {
+                existing.remove();
+            }
+        });
+    };
+
+    // ================= نافذة العرض السريع =================
+    window.openQuickView = function(card) {
+        const brand = card.querySelector('h3').textContent;
+        const name = card.querySelector('h4').textContent;
+        const tags = card.querySelector('.tags').textContent;
+        const desc = card.querySelector('.desc').textContent;
+        const price = card.querySelector('.price').textContent;
+        const imgSrc = card.querySelector('.product-img').src;
+        const originalBtn = card.querySelector('.add-to-cart-btn');
+
+        document.getElementById('qvImg').src = imgSrc;
+        document.getElementById('qvImg').alt = name;
+        document.getElementById('qvBrand').textContent = brand;
+        document.getElementById('qvName').textContent = name;
+        document.getElementById('qvTags').textContent = tags;
+        document.getElementById('qvDesc').textContent = desc;
+        document.getElementById('qvPrice').textContent = price;
+
+        const qvBtn = document.getElementById('qvAddBtn');
+        qvBtn.setAttribute('onclick', originalBtn.getAttribute('onclick') + '; closeQuickView();');
+
+        document.getElementById('quickViewModal').classList.add('open');
+    };
+
+    window.closeQuickView = function() {
+        document.getElementById('quickViewModal').classList.remove('open');
+    };
+
+    // ================= زرار الرجوع لأعلى =================
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', function() {
+        backToTopBtn.classList.toggle('show', window.scrollY > 500);
+    });
+
+    // ظهور الكروت تدريجياً عند التمرير
+    if ('IntersectionObserver' in window) {
+        const revealObserver = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.card').forEach(card => revealObserver.observe(card));
+    } else {
+        document.querySelectorAll('.card').forEach(card => card.classList.add('in-view'));
+    }
+</script>
 </body>
 </html>
