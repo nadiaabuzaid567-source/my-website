@@ -99,9 +99,16 @@
 
         /* ================= CONTROLS ================= */
         .controls-container {
-            max-width: 1200px;
-            margin: 34px auto 6px auto;
-            padding: 0 20px;
+            position: sticky;
+            top: 0;
+            z-index: 500;
+            width: 100%;
+            background: rgba(11, 10, 8, 0.95);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--hairline);
+            margin: 0;
+            padding: 16px 20px 14px;
             display: flex;
             flex-direction: column;
             gap: 16px;
@@ -282,6 +289,39 @@
             letter-spacing: 0.3px;
         }
 
+        .status-badge.out-of-stock-badge {
+            background-color: rgba(217, 115, 107, 0.15);
+            color: #e39790;
+            border: 1px solid rgba(217, 115, 107, 0.4);
+        }
+
+        .card.out-of-stock {
+            opacity: 0.6;
+        }
+
+        .card.out-of-stock .product-img {
+            filter: grayscale(0.4);
+        }
+
+        .card.out-of-stock .add-to-cart-btn {
+            pointer-events: none;
+            opacity: 0.5;
+            border-style: dashed;
+        }
+
+        .qv-out-of-stock-note {
+            background: rgba(217, 115, 107, 0.12);
+            border: 1px solid rgba(217, 115, 107, 0.35);
+            color: #e39790;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 14px;
+            display: none;
+        }
+
         .product-img {
             width: 100%;
             height: 210px;
@@ -356,71 +396,78 @@
             color: #16140f;
         }
 
-        /* ================= CART BAR ================= */
-        .cart-bar {
+        /* ================= BOTTOM NAV BAR ================= */
+        .bottom-nav {
             position: fixed;
             bottom: 0;
             left: 0;
             right: 0;
-            background-color: rgba(11, 10, 8, 0.92);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            color: var(--ink);
-            padding: 14px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-around;
             align-items: center;
-            box-shadow: 0 -8px 24px rgba(0,0,0,0.4);
+            background: rgba(11, 10, 8, 0.96);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-top: 1px solid var(--hairline-strong);
-            z-index: 1000;
-            transform: translateY(100%);
-            transition: transform 0.4s ease;
-            gap: 10px;
-            flex-wrap: wrap;
+            z-index: 950;
+            padding: 8px 10px calc(6px + env(safe-area-inset-bottom));
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.35);
         }
 
-        .cart-bar.visible {
-            transform: translateY(0);
-        }
-
-        .cart-info {
+        .bottom-nav-item {
+            position: relative;
             display: flex;
-            gap: 16px;
+            flex-direction: column;
             align-items: center;
-        }
-
-        .cart-count {
-            background-color: var(--gold);
-            color: #16140f;
-            padding: 5px 13px;
-            border-radius: 15px;
-            font-weight: 800;
-            font-size: 0.85rem;
-        }
-
-        .cart-total {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--gold-bright);
-        }
-
-        .view-cart-btn {
-            background: transparent;
-            color: var(--ink);
-            border: 1px solid var(--hairline-strong);
-            padding: 10px 18px;
-            border-radius: 6px;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: var(--ink-muted);
             font-family: 'Cairo', sans-serif;
+            font-size: 0.68rem;
             font-weight: 700;
-            font-size: 0.85rem;
             cursor: pointer;
-            transition: 0.25s;
+            padding: 6px 22px;
+            transition: 0.2s;
         }
 
-        .view-cart-btn:hover {
-            border-color: var(--gold);
+        .bottom-nav-item svg {
+            width: 22px;
+            height: 22px;
+            stroke: currentColor;
+            fill: none;
+            transition: 0.2s;
+        }
+
+        .bottom-nav-item.active {
             color: var(--gold-bright);
+        }
+
+        .bottom-nav-item.active svg {
+            filter: drop-shadow(0 0 6px rgba(231,205,148,0.35));
+        }
+
+        #navWishlist.active svg {
+            fill: #d9736b;
+            stroke: #d9736b;
+        }
+
+        .bottom-nav-badge {
+            position: absolute;
+            top: -2px;
+            left: 10px;
+            background-color: #d9736b;
+            color: #fff;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 4px;
+            border-radius: 9px;
+            font-weight: 800;
+            font-size: 0.65rem;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--bg);
         }
 
         .checkout-btn {
@@ -763,6 +810,82 @@
             color: var(--gold-bright);
         }
 
+        /* ================= SUCCESS / THANK YOU ================= */
+        #successModal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.65);
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        #successModal.open { display: flex; }
+
+        .success-box {
+            width: 100%;
+            max-width: 360px;
+            background: linear-gradient(180deg, #17150f 0%, #0e0d0a 100%);
+            border: 1px solid var(--hairline-strong);
+            border-radius: 18px;
+            padding: 34px 26px;
+            text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+        }
+
+        .success-icon {
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            background: rgba(76,122,90,0.15);
+            border: 1px solid rgba(143,214,166,0.4);
+            color: #8fd6a6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 18px;
+            animation: successPop 0.4s ease;
+        }
+
+        .success-icon svg { width: 30px; height: 30px; }
+
+        @keyframes successPop {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .success-box h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--ink);
+            margin: 0 0 10px;
+        }
+
+        .success-box p {
+            color: var(--ink-muted);
+            font-size: 0.92rem;
+            line-height: 1.75;
+            margin: 0 0 22px;
+        }
+
+        .success-close {
+            width: 100%;
+            background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+            color: #16140f;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 800;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        .success-close:hover { filter: brightness(1.08); }
+
         .no-results {
             width: 100%;
             text-align: center;
@@ -770,6 +893,30 @@
             font-family: 'Cairo', sans-serif;
             font-size: 0.95rem;
             padding: 50px 20px;
+        }
+
+        .search-highlight {
+            background: rgba(201, 168, 106, 0.3);
+            color: var(--gold-bright);
+            padding: 0 2px;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+
+        /* ================= IMAGE SKELETON LOADING ================= */
+        .img-skel {
+            background: linear-gradient(100deg, #14130f 30%, #211e17 50%, #14130f 70%) !important;
+            background-size: 300% 100% !important;
+            animation: imgShimmer 1.5s ease-in-out infinite;
+        }
+
+        @keyframes imgShimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .img-skel { animation: none !important; }
         }
 
         /* ============ card reveal on scroll ============ */
@@ -888,109 +1035,123 @@
             color: #fff;
         }
 
-        /* ================= QUICK VIEW MODAL ================= */
+        /* ================= PRODUCT PAGE (full screen) ================= */
         #quickViewModal {
             position: fixed;
             inset: 0;
             display: none;
-            background: rgba(0,0,0,0.65);
+            background: var(--bg);
             z-index: 9998;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-
-        #quickViewModal.open { display: flex; }
-
-        .qv-box {
-            width: 100%;
-            max-width: 640px;
-            max-height: 90vh;
             overflow-y: auto;
-            background: linear-gradient(180deg, #17150f 0%, #0e0d0a 100%);
-            border: 1px solid var(--hairline-strong);
-            border-radius: 16px;
-            padding: 26px;
-            position: relative;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.6);
         }
 
-        .qv-close {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            border: 1px solid var(--hairline);
-            background: transparent;
-            color: var(--ink-muted);
-            font-size: 1.1rem;
-            cursor: pointer;
+        #quickViewModal.open { display: block; }
+
+        .qv-topbar {
+            position: sticky;
+            top: 0;
             display: flex;
             align-items: center;
-            justify-content: center;
-            transition: 0.2s;
+            gap: 14px;
+            padding: 16px 18px;
+            background: rgba(11,10,8,0.94);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--hairline);
             z-index: 2;
         }
 
-        .qv-close:hover {
+        .qv-back {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid var(--hairline);
+            background: transparent;
+            color: var(--ink);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: 0.2s;
+        }
+
+        .qv-back:hover {
             border-color: var(--gold);
             color: var(--gold-bright);
+        }
+
+        .qv-back svg { width: 18px; height: 18px; }
+
+        .qv-topbar-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--gold-bright);
+        }
+
+        .qv-page-content {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 26px 20px 70px;
+        }
+
+        .qv-box {
+            position: relative;
         }
 
         .qv-content {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
         }
 
         .qv-img {
             width: 100%;
-            height: 280px;
+            height: 320px;
             object-fit: contain;
             background: #0f0e0b;
             border: 1px solid var(--hairline);
-            border-radius: 10px;
-            padding: 10px;
+            border-radius: 14px;
+            padding: 20px;
         }
 
         .qv-brand {
             font-family: 'Cairo', sans-serif;
-            font-size: 0.78rem;
+            font-size: 0.8rem;
             color: var(--gold);
-            letter-spacing: 2px;
+            letter-spacing: 2.5px;
             font-weight: 700;
-            margin: 0 0 6px;
+            margin: 0 0 8px;
         }
 
         .qv-name {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.9rem;
+            font-size: 2.1rem;
             font-weight: 700;
             color: var(--ink);
-            margin: 0 0 10px;
+            margin: 0 0 12px;
         }
 
         .qv-tags {
             color: var(--ink-muted);
-            font-size: 0.85rem;
-            margin-bottom: 14px;
+            font-size: 0.88rem;
+            margin-bottom: 16px;
         }
 
         .qv-desc {
             color: var(--ink-muted);
-            font-size: 0.95rem;
-            line-height: 1.8;
-            margin-bottom: 18px;
+            font-size: 1rem;
+            line-height: 1.9;
+            margin-bottom: 22px;
         }
 
         .qv-price {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1.7rem;
+            font-size: 2rem;
             font-weight: 700;
             color: var(--gold-bright);
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
 
         .qv-actions {
@@ -998,11 +1159,98 @@
             gap: 10px;
         }
 
-        .qv-actions .add-to-cart-btn { width: auto; flex: 1; }
+        .qv-actions .add-to-cart-btn { width: auto; flex: 1; padding: 14px; }
+
+        .qv-share-btn {
+            width: 50px;
+            height: 50px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            border: 1px solid var(--hairline-strong);
+            background: transparent;
+            color: #4fd67a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .qv-share-btn:hover {
+            background: rgba(76, 214, 122, 0.1);
+            border-color: #4fd67a;
+        }
+
+        .qv-share-btn svg { width: 22px; height: 22px; }
+
+        .qv-suggestions {
+            margin-top: 44px;
+            padding-top: 26px;
+            border-top: 1px solid var(--hairline);
+        }
+
+        .qv-suggestions h4 {
+            font-family: 'Cairo', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--ink);
+            margin: 0 0 18px;
+        }
+
+        .qv-suggest-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 16px;
+        }
+
+        .qv-suggest-item {
+            cursor: pointer;
+            text-align: center;
+            background: var(--surface);
+            border: 1px solid var(--hairline);
+            border-radius: 10px;
+            padding: 12px;
+            transition: 0.2s;
+        }
+
+        .qv-suggest-item:hover {
+            border-color: var(--hairline-strong);
+            transform: translateY(-3px);
+        }
+
+        .qv-suggest-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: contain;
+            background: #0f0e0b;
+            border: 1px solid var(--hairline);
+            border-radius: 8px;
+            padding: 6px;
+            margin-bottom: 8px;
+        }
+
+        .qv-suggest-item span {
+            display: block;
+            font-size: 0.78rem;
+            color: var(--ink);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .qv-suggest-item .qv-suggest-price {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gold-bright);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-top: 3px;
+        }
 
         @media (min-width: 640px) {
             .qv-content { flex-direction: row; align-items: flex-start; }
-            .qv-img { width: 240px; flex-shrink: 0; height: 240px; }
+            .qv-img { width: 280px; flex-shrink: 0; height: 280px; }
         }
 
         /* ================= BACK TO TOP ================= */
@@ -1047,9 +1295,79 @@
         @media (max-width: 600px) {
             header { padding: 42px 16px 28px; }
             header .logo { font-size: 2.5rem; letter-spacing: 7px; }
-            .card { width: 100%; max-width: 420px; }
-            .products-grid { gap: 16px; }
-            .cart-bar { padding: 12px 14px; }
+
+            .products-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .card {
+                width: 100%;
+                max-width: none;
+                padding: 12px;
+                border-radius: 8px;
+            }
+
+            .product-img {
+                height: 130px;
+                padding: 6px;
+                margin-bottom: 10px;
+            }
+
+            .card h3 {
+                font-size: 0.6rem;
+                letter-spacing: 1px;
+            }
+
+            .card h4 {
+                font-size: 1rem;
+                margin-bottom: 6px;
+            }
+
+            .tags {
+                font-size: 0.66rem;
+                margin-bottom: 8px;
+            }
+
+            .desc {
+                font-size: 0.74rem;
+                height: 52px;
+                line-height: 1.5;
+                margin-bottom: 10px;
+            }
+
+            .price {
+                font-size: 1.15rem;
+                margin-bottom: 10px;
+            }
+
+            .add-to-cart-btn {
+                padding: 9px;
+                font-size: 0.72rem;
+            }
+
+            .status-badge {
+                font-size: 0.58rem;
+                padding: 3px 7px;
+                top: 10px;
+                left: 10px;
+            }
+
+            .wishlist-btn {
+                width: 26px;
+                height: 26px;
+                top: 10px;
+                right: 10px;
+            }
+
+            .wishlist-btn svg {
+                width: 13px;
+                height: 13px;
+            }
+
+            .bottom-nav-item { padding: 6px 16px; font-size: 0.62rem; }
+            .bottom-nav-item svg { width: 20px; height: 20px; }
             .checkout-btn { padding: 10px 18px; font-size: 0.85rem; }
         }
     </style>
@@ -1076,7 +1394,7 @@
             <button class="filter-btn active" onclick="filterGender('all', this)">الكل</button>
             <button class="filter-btn" onclick="filterGender('femme', this)">تشكيلة النساء</button>
             <button class="filter-btn" onclick="filterGender('homme', this)">تشكيلة الرجال</button>
-            <button class="filter-btn wishlist-filter" id="wishlistFilterBtn" onclick="toggleWishlistFilter(this)">♥ المفضلة</button>
+            <button class="filter-btn wishlist-filter" id="wishlistFilterBtn" onclick="toggleWishlistFilter()">♥ المفضلة</button>
         </div>
     </div>
 
@@ -1086,7 +1404,7 @@
             
             <div class="card" data-name="giorgio armani si parfum" data-brand="giorgio armani">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/si.jpeg" alt="Sì Parfum" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/si.jpeg" alt="Sì Parfum" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>GIORGIO ARMANI</h3>
                 <h4>Sì Parfum</h4>
                 <p class="tags">Chypre, Floral, Vanilla, Leather</p>
@@ -1097,7 +1415,7 @@
 
             <div class="card" data-name="kayali fragrances lovefest cherry 48" data-brand="kayali fragrances">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/cherry.jpeg" alt="Lovefest Cherry" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/cherry.jpeg" alt="Lovefest Cherry" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>KAYALI FRAGRANCES</h3>
                 <h4>Lovefest Cherry | 48</h4>
                 <p class="tags">Woody, Amber, Cherry, Sweet</p>
@@ -1108,7 +1426,7 @@
 
             <div class="card" data-name="xerjoff neorio" data-brand="xerjoff">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/neorio.jpeg" alt="NeoRio" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/neorio.jpeg" alt="NeoRio" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>XERJOFF</h3>
                 <h4>NeoRio</h4>
                 <p class="tags">Oriental, Sweet, Boozy, Warm Spicy</p>
@@ -1119,7 +1437,7 @@
 
             <div class="card" data-name="kayali fragrances vanilla 28" data-brand="kayali fragrances">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/vanilla28.jpeg" alt="Vanilla 28" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/vanilla28.jpeg" alt="Vanilla 28" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>KAYALI FRAGRANCES</h3>
                 <h4>Vanilla | 28</h4>
                 <p class="tags">Sweet, Vanilla, Amber, Powdery</p>
@@ -1130,7 +1448,7 @@
 
             <div class="card" data-name="kayali fragrances lemon sugar 14" data-brand="kayali fragrances">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/lemonsugar.jpeg" alt="Lemon Sugar 14" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/lemonsugar.jpeg" alt="Lemon Sugar 14" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>KAYALI FRAGRANCES</h3>
                 <h4>Lemon Sugar | 14</h4>
                 <p class="tags">Citrus, Sweet, Vanilla, Fresh</p>
@@ -1141,7 +1459,7 @@
 
             <div class="card" data-name="yves saint laurent libre intense" data-brand="yves saint laurent">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/libreintense.jpeg" alt="Libre Intense" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/libreintense.jpeg" alt="Libre Intense" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>YVES SAINT LAURENT</h3>
                 <h4>Libre Intense</h4>
                 <p class="tags">Vanilla, Citrus, Lavender, Amber</p>
@@ -1152,7 +1470,7 @@
 
             <div class="card" data-name="yves saint laurent libre le parfum" data-brand="yves saint laurent">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/libreleparfum.jpeg" alt="Libre Le Parfum" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/libreleparfum.jpeg" alt="Libre Le Parfum" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>YVES SAINT LAURENT</h3>
                 <h4>Libre Le Parfum</h4>
                 <p class="tags">Warm Spicy, Sweet, Vanilla, Honey</p>
@@ -1163,7 +1481,7 @@
 
             <div class="card" data-name="jean paul gaultier la belle le parfum" data-brand="jean paul gaultier">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/labelle.jpeg" alt="La Belle Le Parfum" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/labelle.jpeg" alt="La Belle Le Parfum" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>JEAN PAUL GAULTIER</h3>
                 <h4>La Belle Le Parfum</h4>
                 <p class="tags">Vanilla, Sweet, Fruity, Amber</p>
@@ -1174,7 +1492,7 @@
 
             <div class="card" data-name="carolina herrera good girl" data-brand="carolina herrera">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/goodgirl.jpeg" alt="Good Girl" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/goodgirl.jpeg" alt="Good Girl" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>CAROLINA HERRERA</h3>
                 <h4>Good Girl</h4>
                 <p class="tags">Sweet, White Floral, Cacao, Vanilla</p>
@@ -1185,7 +1503,7 @@
 
             <div class="card" data-name="burberry my burberry blush" data-brand="burberry">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/burberryblush.jpeg" alt="My Burberry Blush" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/burberryblush.jpeg" alt="My Burberry Blush" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>BURBERRY</h3>
                 <h4>My Burberry Blush</h4>
                 <p class="tags">Fruity, Floral, Fresh, Rose</p>
@@ -1196,7 +1514,7 @@
 
             <div class="card" data-name="xerjoff erbapura" data-brand="xerjoff">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/erbapura.jpeg" alt="Erba Pura" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/erbapura.jpeg" alt="Erba Pura" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>XERJOFF</h3>
                 <h4>Erba Pura</h4>
                 <p class="tags">Fruity, Citrus, Sweet, Amber</p>
@@ -1207,7 +1525,7 @@
 
             <div class="card" data-name="xerjoff torino21" data-brand="xerjoff">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/torino.jpeg" alt="Torino21" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/torino.jpeg" alt="Torino21" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>XERJOFF</h3>
                 <h4>Torino21</h4>
                 <p class="tags">Aromatic, Green, Citrus, Fresh Spicy, Mint</p>
@@ -1217,9 +1535,9 @@
                 <button class="add-to-cart-btn" onclick="addToCart('Torino21', 'XER-TOR21','torino.jpeg')">إضافة إلى الطلب</button>
             </div>
 
-             <div class="card" data-name="maison francis kurkdjian baccarat rouge 540 extrait" data-brand="maison francis kurkdjian">
+             <div class="card" data-name="maison francis kurkdjian baccarat rouge 540 extrait" data-brand="maison francis kurkdjian" data-stock="out">
                    <span class="status-badge">متوفر الآن</span>
-                  <img class="product-img" src="images/baccarat.jpeg" alt="Baccarat Rouge 540 Extrait" loading="lazy" decoding="async">
+                  <img class="product-img img-skel" src="images/baccarat.jpeg" alt="Baccarat Rouge 540 Extrait" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                   <h3>MAISON FRANCIS KURKDJIAN</h3>
                   <h4>Baccarat Rouge 540 Extrait</h4>
                   <p class="tags">Amber, Almond, Woody, Warm Spicy, Saffron</p>
@@ -1230,7 +1548,7 @@
 
             <div class="card" data-name="prada paradoxe" data-brand="prada">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/prada.jpeg" alt="Prada Paradoxe" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/prada.jpeg" alt="Prada Paradoxe" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>PRADA</h3>
     <h4>Paradoxe</h4>
     <p class="tags">White Floral, Citrus, Sweet, Vanilla, Amber</p>
@@ -1240,7 +1558,7 @@
 </div>
             <div class="card" data-name="jean paul gaultier scandal" data-brand="jean paul gaultier">
                 <span class="status-badge">متوفر الآن</span>
-                <img class="product-img" src="images/scandal.jpeg" alt="Scandal" loading="lazy" decoding="async">
+                <img class="product-img img-skel" src="images/scandal.jpeg" alt="Scandal" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                 <h3>JEAN PAUL GAULTIER</h3>
                 <h4>Scandal</h4>
                 <p class="tags">Honey, Sweet, Citrus, White Floral</p>
@@ -1251,7 +1569,7 @@
 
             <div class="card" data-name="burberry her elixir" data-brand="burberry">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/her.jpeg" alt="Her Elixir" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/her.jpeg" alt="Her Elixir" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>BURBERRY</h3>
     <h4>Her Elixir</h4>
     <p class="tags">Fruity, Sweet, Vanilla, Powdery, Milky</p>
@@ -1262,7 +1580,7 @@
 
             <div class="card" data-name="burberry her" data-brand="burberry">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/burberry.jpeg" alt="Burberry Her" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/burberry.jpeg" alt="Burberry Her" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>BURBERRY</h3>
     <h4>Burberry Her</h4>
     <p class="tags">Fruity, Sweet, Woody, Musky</p>
@@ -1272,7 +1590,7 @@
 </div>
             <div class="card" data-name="giorgio armani si passione" data-brand="giorgio armani">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/si2.jpeg" alt="Sì Passione" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/si2.jpeg" alt="Sì Passione" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>GIORGIO ARMANI</h3>
     <h4>Sì Passione</h4>
     <p class="tags">Fruity, Rose, Sweet, Floral, Soft Spicy</p>
@@ -1287,7 +1605,7 @@
 <!-- Scandal Le Parfum -->
 <div class="card" data-name="jean paul gaultier scandal le parfum" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/scandalle.jpeg" alt="Scandal Le Parfum" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/scandalle.jpeg" alt="Scandal Le Parfum" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Scandal Le Parfum</h4>
     <p class="tags">Vanilla, Caramel, Sweet, White Floral</p>
@@ -1299,7 +1617,7 @@
 <!-- Good Girl Blush -->
 <div class="card" data-name="carolina herrera good girl blush" data-brand="carolina herrera">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/goodblush.jpeg" alt="Good Girl Blush" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/goodblush.jpeg" alt="Good Girl Blush" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>CAROLINA HERRERA</h3>
     <h4>Good Girl Blush</h4>
     <p class="tags">Vanilla, Floral, Powdery, Citrus</p>
@@ -1317,7 +1635,7 @@
             
             <div class="card" data-name="prada paradigme" data-brand="prada">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/brada.jpeg" alt="Paradigme" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/brada.jpeg" alt="Paradigme" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>PRADA</h3>
     <h4>Paradigme</h4>
     <p class="tags">Amber, Powdery, Fresh Spicy, Citrus, Woody</p>
@@ -1328,7 +1646,7 @@
 
 <div class="card" data-name="xerjoff erba pura" data-brand="xerjoff">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/erbapura.jpeg" alt="Erba Pura" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/erbapura.jpeg" alt="Erba Pura" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>XERJOFF</h3>
     <h4>Erba Pura</h4>
     <p class="tags">Fruity, Sweet, Citrus, Amber, Musky</p>
@@ -1339,7 +1657,7 @@
 
 <div class="card" data-name="xerjoff torino21" data-brand="xerjoff">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/torino.jpeg" alt="Torino21" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/torino.jpeg" alt="Torino21" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>XERJOFF</h3>
     <h4>Torino21</h4>
     <p class="tags">Aromatic, Green, Citrus, Fresh Spicy, Mint</p>
@@ -1350,7 +1668,7 @@
 
 <div class="card" data-name="valentino uomo intense" data-brand="valentino">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/uomo.jpeg" alt="Uomo Intense" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/uomo.jpeg" alt="Uomo Intense" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>VALENTINO</h3>
     <h4>Uomo Intense</h4>
     <p class="tags">Powdery, Iris, Leather, Vanilla, Violet</p>
@@ -1361,7 +1679,7 @@
 
 <div class="card" data-name="rabanne invictus" data-brand="rabanne">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/inva.jpeg" alt="Invictus" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/inva.jpeg" alt="Invictus" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>RABANNE</h3>
     <h4>Invictus</h4>
     <p class="tags">Citrus, Marine, Fresh Spicy, Aromatic</p>
@@ -1372,7 +1690,7 @@
 
 <div class="card" data-name="lattafa khamrah qahwa" data-brand="lattafa perfumes">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/kh.jpeg" alt="Khamrah Qahwa" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/kh.jpeg" alt="Khamrah Qahwa" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>LATTAFA PERFUMES</h3>
     <h4>Khamrah Qahwa</h4>
     <p class="tags">Warm Spicy, Coffee, Vanilla, Amber, Cinnamon</p>
@@ -1383,7 +1701,7 @@
 
 <div class="card" data-name="lattafa khamrah" data-brand="lattafa perfumes">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/kh2.jpeg" alt="Khamrah" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/kh2.jpeg" alt="Khamrah" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>LATTAFA PERFUMES</h3>
     <h4>Khamrah</h4>
     <p class="tags">Sweet, Warm Spicy, Amber, Vanilla</p>
@@ -1394,7 +1712,7 @@
 
 <div class="card" data-name="lattafa khamrah dukhan" data-brand="lattafa perfumes">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/kh3.jpeg" alt="Khamrah Dukhan" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/kh3.jpeg" alt="Khamrah Dukhan" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>LATTAFA PERFUMES</h3>
     <h4>Khamrah Dukhan</h4>
     <p class="tags">Smoky, Woody, Sweet, Warm Spicy, Amber</p>
@@ -1403,9 +1721,9 @@
     <button class="add-to-cart-btn" onclick="addToCart('Khamrah Dukhan', 'LAT-DKH','kh3.jpeg')">إضافة إلى الطلب</button>
 </div>
 
-<div class="card" data-name="tom ford tobacco vanille" data-brand="tom ford">
+<div class="card" data-name="tom ford tobacco vanille" data-brand="tom ford" data-stock="out">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/top.jpeg" alt="Tobacco Vanille" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/top.jpeg" alt="Tobacco Vanille" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>TOM FORD</h3>
     <h4>Tobacco Vanille</h4>
     <p class="tags">Sweet, Tobacco, Vanilla, Warm Spicy, Woody</p>
@@ -1416,7 +1734,7 @@
 
 <div class="card" data-name="rabanne million gold" data-brand="rabanne">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/mill.jpeg" alt="Million Gold" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/mill.jpeg" alt="Million Gold" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>RABANNE</h3>
     <h4>Million Gold</h4>
     <p class="tags">Citrus, Warm Spicy, Woody, Amber</p>
@@ -1427,7 +1745,7 @@
 <!-- 11. YSL - MYSLF -->
 <div class="card" data-name="yves saint laurent myslf" data-brand="yves saint laurent">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/myslf.jpeg" alt="MYSLF" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/myslf.jpeg" alt="MYSLF" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>YVES SAINT LAURENT</h3>
     <h4>MYSLF</h4>
     <p class="tags">White Floral, Citrus, Woody, Fresh, Amber</p>
@@ -1439,7 +1757,7 @@
 <!-- 12. JPG - Ultra Male -->
 <div class="card" data-name="jean paul gaultier ultra male" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/ultra.jpeg" alt="Ultra Male" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/ultra.jpeg" alt="Ultra Male" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Ultra Male</h4>
     <p class="tags">Sweet, Vanilla, Fruity, Warm Spicy</p>
@@ -1451,7 +1769,7 @@
 <!-- 13. JPG - Le Male Le Parfum -->
 <div class="card" data-name="jean paul gaultier le male le parfum" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/lemale.jpeg" alt="Le Male Le Parfum" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/lemale.jpeg" alt="Le Male Le Parfum" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Le Male Le Parfum</h4>
     <p class="tags">Vanilla, Warm Spicy, Aromatic, Powdery, Lavender</p>
@@ -1463,7 +1781,7 @@
 <!-- 14. JPG - Le Beau Le Parfum -->
 <div class="card" data-name="jean paul gaultier le beau le parfum" data-brand="jean paul gaultier">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/le.jpeg" alt="Le Beau Le Parfum" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/le.jpeg" alt="Le Beau Le Parfum" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>JEAN PAUL GAULTIER</h3>
     <h4>Le Beau Le Parfum</h4>
     <p class="tags">Coconut, Sweet, Vanilla, Tropical</p>
@@ -1475,7 +1793,7 @@
 <!-- 15. Rabanne - Invictus Legend -->
 <div class="card" data-name="rabanne invictus legend" data-brand="rabanne">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/inv.jpeg" alt="Invictus Legend" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/inv.jpeg" alt="Invictus Legend" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>RABANNE</h3>
     <h4>Invictus Legend</h4>
     <p class="tags">Aromatic, Marine, Salty, Amber, Citrus</p>
@@ -1487,7 +1805,7 @@
 <!-- 16. Dior - Sauvage -->
 <div class="card" data-name="dior sauvage" data-brand="dior">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/sau.jpeg" alt="Sauvage" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/sau.jpeg" alt="Sauvage" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>DIOR</h3>
     <h4>Sauvage</h4>
     <p class="tags">Fresh Spicy, Citrus, Amber, Aromatic, Woody</p>
@@ -1499,7 +1817,7 @@
 <!-- 17. Versace - Eros -->
 <div class="card" data-name="versace eros" data-brand="versace">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/eros.jpeg" alt="Eros" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/eros.jpeg" alt="Eros" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>VERSACE</h3>
     <h4>Eros</h4>
     <p class="tags">Vanilla, Aromatic, Green, Fresh Spicy</p>
@@ -1511,7 +1829,7 @@
 <!-- 18. Chanel - Bleu de Chanel -->
 <div class="card" data-name="chanel bleu de chanel" data-brand="chanel">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/bleu.jpeg" alt="Bleu de Chanel" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/bleu.jpeg" alt="Bleu de Chanel" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>CHANEL</h3>
     <h4>Bleu de Chanel</h4>
     <p class="tags">Citrus, Woody, Amber, Warm Spicy, Incense</p>
@@ -1523,7 +1841,7 @@
 <!-- 19. Giorgio Armani - Stronger With You Absolutely -->
 <div class="card" data-name="giorgio armani stronger with you absolutely" data-brand="giorgio armani">
     <span class="status-badge">متوفر الآن</span>
-    <img class="product-img" src="images/swy.jpeg" alt="Stronger With You Absolutely" loading="lazy" decoding="async">
+    <img class="product-img img-skel" src="images/swy.jpeg" alt="Stronger With You Absolutely" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>GIORGIO ARMANI</h3>
     <h4>SWY Absolutely</h4>
     <p class="tags">Sweet, Amber, Vanilla, Woody, Boozy, Warm Spicy</p>
@@ -1534,16 +1852,25 @@
 </div>
     </section>
 
-   <div id="cartBar" class="cart-bar">
-    <div class="cart-info">
-        <span class="cart-count" id="cartCount">0 عطور</span>
-        <span class="cart-total" id="cartTotal">إجمالي: 0 EGP</span>
-    </div>
-    <div style="display: flex; gap: 10px;">
-        <button class="view-cart-btn" onclick="openCartModal()">عرض السلة</button>
-        <button class="checkout-btn" onclick="openOrderModal()">إتمام الطلب</button>
-    </div>
-</div>
+   <nav class="bottom-nav">
+        <button class="bottom-nav-item active" id="navHome" onclick="goHome()" aria-label="الرئيسية">
+            <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            <span>الرئيسية</span>
+        </button>
+        <button class="bottom-nav-item" id="navWishlist" onclick="toggleWishlistFilter()" aria-label="المفضلة">
+            <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.35-9.5-8.5C0.8 8.2 2.2 5 5.5 5c1.9 0 3.3 1 4.5 2.5C11.2 6 12.6 5 14.5 5 17.8 5 19.2 8.2 21.5 11.5 19 15.65 12 20 12 20z"/></svg>
+            <span>المفضلة</span>
+        </button>
+        <button class="bottom-nav-item" id="navCart" onclick="openCartModal()" aria-label="السلة">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="9" cy="21" r="1"/>
+                <circle cx="19" cy="21" r="1"/>
+                <path d="M1 1h3l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+            </svg>
+            <span class="cart-count bottom-nav-badge" id="cartCount">0</span>
+            <span>السلة</span>
+        </button>
+    </nav>
 
 
     <script>
@@ -1573,22 +1900,6 @@ function showToast(name) {
     toast._t = setTimeout(() => toast.classList.remove('show'), 2200);
 }
 
-        function updateCartUI() {
-            const cartBar = document.getElementById('cartBar');
-            const cartCount = document.getElementById('cartCount');
-            const cartTotal = document.getElementById('cartTotal');
-            
-            let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-            let totalPrice = totalItems * pricePerItem;
-
-            if (totalItems > 0) {
-                cartBar.classList.add('visible');
-                cartCount.innerText = totalItems + " عطور";
-                cartTotal.innerText = "إجمالي: " + totalPrice + " EGP";
-            } else {
-                cartBar.classList.remove('visible');
-            }
-        }
         // فتح نافذة السلة وعرض المحتويات
 function openCartModal() {
     let list = document.getElementById('cartItemsList');
@@ -1603,7 +1914,7 @@ function openCartModal() {
             list.innerHTML += `
                 <div class="cart-item-card">
                     <div class="cart-item-row">
-                        <img src="images/${item.img}" class="cart-item-img" onerror="this.src='images/placeholder.jpeg'">
+                        <img src="images/${item.img}" class="cart-item-img img-skel" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel');this.src='images/placeholder.jpeg'">
                         <div style="flex:1;">
                             <div class="cart-item-name">${item.name}</div>
                             <div class="cart-item-code">كود: ${item.code}</div>
@@ -1647,6 +1958,17 @@ function closeOrderModal() {
     document.getElementById('orderModal').classList.remove('open');
 }
 
+function showOrderSuccess() {
+    const modal = document.getElementById('successModal');
+    modal.classList.add('open');
+    clearTimeout(modal._autoCloseTimer);
+    modal._autoCloseTimer = setTimeout(closeSuccessModal, 6000);
+}
+
+function closeSuccessModal() {
+    document.getElementById('successModal').classList.remove('open');
+}
+
 // تعديل الكمية
 function changeQty(index, delta) {
     cart[index].quantity += delta;
@@ -1667,23 +1989,19 @@ function removeItem(index) {
 // تحديث شكل السلة السفلي
 function updateCartUI() {
     localStorage.setItem('ora_cart', JSON.stringify(cart));
-    const cartBar = document.getElementById('cartBar');
     const cartCount = document.getElementById('cartCount');
-    const cartTotal = document.getElementById('cartTotal');
 
     let totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    let totalPrice = totalItems * 450;
 
     cartCount.classList.remove('bump');
     void cartCount.offsetWidth; // إعادة تشغيل الأنيميشن
     cartCount.classList.add('bump');
 
     if (totalItems > 0) {
-        cartBar.classList.add('visible');
-        cartCount.innerText = totalItems + " عطور";
-        cartTotal.innerText = "إجمالي: " + totalPrice + " EGP";
+        cartCount.style.display = 'flex';
+        cartCount.innerText = totalItems;
     } else {
-        cartBar.classList.remove('visible');
+        cartCount.style.display = 'none';
     }
 }
 
@@ -1786,7 +2104,8 @@ function sendToWhatsApp(phoneNumber) {
     
     // تجميع محتويات الكارت
     let items = cart.map(item => item.name).join(", "); 
-    let total = document.getElementById('cartTotal').innerText;
+    let totalQty = cart.reduce((sum, item) => sum + item.quantity, 0);
+    let total = (totalQty * pricePerItem) + " EGP";
     
     if(!name || !address || !phone) {
         alert("من فضلك أكمل/ي البيانات");
@@ -1807,7 +2126,18 @@ let message = `مرحبا ORA-perfume اريد طلب العطور التالي�
 let encodedMessage = encodeURIComponent(message);
 
 // 4. فتح الرابط
-window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
+window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+
+// 5. تفريغ السلة وتصفير النموذج بعد إرسال الطلب
+cart = [];
+updateCartUI();
+document.getElementById('customerName').value = '';
+document.getElementById('customerAddress').value = '';
+document.getElementById('customerPhone').value = '';
+closeOrderModal();
+closeCartModal();
+showOrderSuccess();
+}
 
     </script>
     <!-- نافذة عرض السلة -->
@@ -1837,20 +2167,46 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
     </div>
 </div>
 
-<div id="quickViewModal" onclick="if(event.target===this) closeQuickView()">
-    <div class="qv-box">
-        <button class="qv-close" onclick="closeQuickView()">&times;</button>
-        <div class="qv-content">
-            <img id="qvImg" class="qv-img" src="" alt="">
-            <div>
-                <p class="qv-brand" id="qvBrand"></p>
-                <h3 class="qv-name" id="qvName"></h3>
-                <p class="qv-tags" id="qvTags"></p>
-                <p class="qv-desc" id="qvDesc"></p>
-                <div class="qv-price" id="qvPrice"></div>
-                <div class="qv-actions">
-                    <button class="add-to-cart-btn" id="qvAddBtn">إضافة إلى الطلب</button>
+<div id="successModal" onclick="if(event.target===this) closeSuccessModal()">
+    <div class="success-box">
+        <div class="success-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3>تم إرسال طلبك بنجاح</h3>
+        <p>هنتواصل معاك في أقرب وقت لتأكيد الطلب والتوصيل. شكراً لثقتك في ORA</p>
+        <button onclick="closeSuccessModal()" class="success-close">تمام</button>
+    </div>
+</div>
+
+<div id="quickViewModal">
+    <div class="qv-topbar">
+        <button class="qv-back" onclick="closeQuickView()" aria-label="رجوع">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </button>
+        <span class="qv-topbar-title">ORA</span>
+    </div>
+    <div class="qv-page-content">
+        <div class="qv-box">
+            <div class="qv-content">
+                <img id="qvImg" class="qv-img" src="" alt="" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
+                <div>
+                    <p class="qv-brand" id="qvBrand"></p>
+                    <h3 class="qv-name" id="qvName"></h3>
+                    <p class="qv-tags" id="qvTags"></p>
+                    <p class="qv-desc" id="qvDesc"></p>
+                    <div class="qv-price" id="qvPrice"></div>
+                    <div class="qv-out-of-stock-note" id="qvOutOfStock">نفدت الكمية حالياً — هتتوفر قريباً</div>
+                    <div class="qv-actions">
+                        <button class="add-to-cart-btn" id="qvAddBtn">إضافة إلى الطلب</button>
+                        <button class="qv-share-btn" onclick="shareProduct()" aria-label="مشاركة على واتساب">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4a8.9 8.9 0 0 0-7.7 13.34L3 21l3.79-1.29a8.9 8.9 0 0 0 4.26 1.09h.01c4.9 0 8.9-3.99 8.9-8.9a8.85 8.85 0 0 0-2.36-5.58zm-5.55 13.7h-.01a7.4 7.4 0 0 1-3.77-1.03l-.27-.16-2.8.96.94-2.73-.18-.28a7.4 7.4 0 0 1 6.09-11.42 7.34 7.34 0 0 1 5.22 2.17 7.34 7.34 0 0 1 2.16 5.23c0 4.08-3.32 7.4-7.38 7.4zm4.05-5.54c-.22-.11-1.31-.65-1.51-.72-.2-.07-.35-.11-.5.11-.15.22-.57.72-.7.87-.13.15-.26.16-.48.06-.22-.11-.94-.35-1.79-1.11-.66-.59-1.11-1.32-1.24-1.54-.13-.22-.01-.34.1-.45.1-.1.22-.26.33-.39.11-.13.15-.22.22-.37.07-.15.04-.28-.02-.39-.06-.11-.5-1.21-.69-1.66-.18-.43-.37-.38-.5-.38-.13 0-.28-.02-.43-.02-.15 0-.39.06-.6.28-.2.22-.79.77-.79 1.87 0 1.1.81 2.17.92 2.32.11.15 1.6 2.44 3.87 3.42.54.23.96.37 1.29.48.54.17 1.03.15 1.42.09.43-.06 1.31-.53 1.5-1.05.18-.51.18-.95.13-1.05-.06-.1-.2-.15-.42-.26z"/></svg>
+                        </button>
+                    </div>
                 </div>
+            </div>
+            <div class="qv-suggestions">
+                <h4>قد يعجبك أيضاً</h4>
+                <div class="qv-suggest-grid" id="qvSuggestions"></div>
             </div>
         </div>
     </div>
@@ -1893,6 +2249,21 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
         };
         card.appendChild(heart);
 
+        // نفدت الكمية: أضيفي data-stock="out" لأي كارت عشان تعطليه
+        if (card.dataset.stock === 'out') {
+            card.classList.add('out-of-stock');
+            const badge = card.querySelector('.status-badge');
+            if (badge) {
+                badge.textContent = 'نفدت الكمية';
+                badge.classList.add('out-of-stock-badge');
+            }
+            const btn = card.querySelector('.add-to-cart-btn');
+            if (btn) {
+                btn.textContent = 'غير متوفر حالياً';
+                btn.disabled = true;
+            }
+        }
+
         // فتح نافذة العرض السريع عند الضغط على الكارت (عدا الأزرار)
         card.style.cursor = 'pointer';
         card.addEventListener('click', function(e) {
@@ -1914,13 +2285,48 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
         if (wishlistFilterActive) applyFilters();
     }
 
-    function toggleWishlistFilter(btn) {
+    window.toggleWishlistFilter = function() {
         wishlistFilterActive = !wishlistFilterActive;
-        btn.classList.toggle('active', wishlistFilterActive);
+        document.getElementById('wishlistFilterBtn').classList.toggle('active', wishlistFilterActive);
+        document.getElementById('navWishlist').classList.toggle('active', wishlistFilterActive);
+        document.getElementById('navHome').classList.toggle('active', !wishlistFilterActive);
         applyFilters();
-    }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    window.goHome = function() {
+        wishlistFilterActive = false;
+        document.getElementById('wishlistFilterBtn').classList.remove('active');
+        document.getElementById('navWishlist').classList.remove('active');
+        document.getElementById('navHome').classList.add('active');
+
+        document.getElementById('searchInput').value = '';
+        document.getElementById('searchWrap').classList.remove('has-text');
+
+        const allBtn = document.querySelector('.filter-buttons .filter-btn');
+        document.querySelectorAll('.filter-buttons .filter-btn').forEach(b => b.classList.remove('active'));
+        if (allBtn) { allBtn.classList.add('active'); filterGender('all', allBtn); }
+
+        applyFilters();
+        closeQuickView();
+        closeCartModal();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
 
     // ================= البحث + فلتر المفضلة معاً =================
+    function highlightMatch(el, term) {
+        if (!el) return;
+        if (!el.dataset.original) el.dataset.original = el.textContent;
+        const original = el.dataset.original;
+        if (!term) {
+            el.innerHTML = original;
+            return;
+        }
+        const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        const regex = new RegExp('(' + escaped + ')', 'ig');
+        el.innerHTML = original.replace(regex, '<span class="search-highlight">$1</span>');
+    }
+
     window.applyFilters = function() {
         let input = document.getElementById('searchInput').value.toLowerCase();
         document.getElementById('searchWrap').classList.toggle('has-text', input.length > 0);
@@ -1932,6 +2338,10 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
             const matchesSearch = name && (name.includes(input) || brand.includes(input));
             const matchesWishlist = !wishlistFilterActive || wishlist.includes(code);
             card.classList.toggle('hidden', !(matchesSearch && matchesWishlist));
+
+            const nameTerm = matchesSearch && input ? input : '';
+            highlightMatch(card.querySelector('h3'), nameTerm);
+            highlightMatch(card.querySelector('h4'), nameTerm);
         });
 
         document.querySelectorAll('.products-grid').forEach(grid => {
@@ -1952,7 +2362,7 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
         });
     };
 
-    // ================= نافذة العرض السريع =================
+    // ================= صفحة عرض المنتج =================
     window.openQuickView = function(card) {
         const brand = card.querySelector('h3').textContent;
         const name = card.querySelector('h4').textContent;
@@ -1962,7 +2372,9 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
         const imgSrc = card.querySelector('.product-img').src;
         const originalBtn = card.querySelector('.add-to-cart-btn');
 
-        document.getElementById('qvImg').src = imgSrc;
+        const qvImgEl = document.getElementById('qvImg');
+        qvImgEl.classList.add('img-skel');
+        qvImgEl.src = imgSrc;
         document.getElementById('qvImg').alt = name;
         document.getElementById('qvBrand').textContent = brand;
         document.getElementById('qvName').textContent = name;
@@ -1973,11 +2385,52 @@ window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');}
         const qvBtn = document.getElementById('qvAddBtn');
         qvBtn.setAttribute('onclick', originalBtn.getAttribute('onclick') + '; closeQuickView();');
 
-        document.getElementById('quickViewModal').classList.add('open');
+        renderSuggestions(card);
+
+        const modal = document.getElementById('quickViewModal');
+        modal.scrollTop = 0;
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    };
+
+    function renderSuggestions(currentCard) {
+        const allCards = Array.from(document.querySelectorAll('.card'));
+        const others = allCards.filter(c => c !== currentCard);
+
+        // خلط عشوائي (Fisher–Yates)
+        for (let i = others.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [others[i], others[j]] = [others[j], others[i]];
+        }
+
+        const picks = others.slice(0, 8);
+        const container = document.getElementById('qvSuggestions');
+        container.innerHTML = '';
+
+        picks.forEach(pc => {
+            const img = pc.querySelector('.product-img').src;
+            const name = pc.querySelector('h4').textContent;
+            const price = pc.querySelector('.price').textContent;
+            const item = document.createElement('div');
+            item.className = 'qv-suggest-item';
+            item.innerHTML = `<img src="${img}" alt="${name}" loading="lazy" class="img-skel" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')"><span>${name}</span><span class="qv-suggest-price">${price}</span>`;
+            item.addEventListener('click', () => openQuickView(pc));
+            container.appendChild(item);
+        });
+    }
+
+    window.shareProduct = function() {
+        const brand = document.getElementById('qvBrand').textContent;
+        const name = document.getElementById('qvName').textContent;
+        const price = document.getElementById('qvPrice').textContent;
+        const message = `✨ شوف/ي العطر ده من ORA Perfumes:\n${brand} — ${name}\nالسعر: ${price}\n\nمتوفر دلوقتي، للطلب تواصل/ي معانا على واتساب 🌟`;
+        const encoded = encodeURIComponent(message);
+        window.open(`https://wa.me/?text=${encoded}`, '_blank');
     };
 
     window.closeQuickView = function() {
         document.getElementById('quickViewModal').classList.remove('open');
+        document.body.style.overflow = '';
     };
 
     // ================= زرار الرجوع لأعلى =================
