@@ -31,7 +31,10 @@
             background-color: var(--bg);
             background-image:
                 radial-gradient(ellipse at 15% 0%, rgba(201,168,106,0.06), transparent 55%),
-                radial-gradient(ellipse at 85% 20%, rgba(201,168,106,0.05), transparent 50%);
+                radial-gradient(ellipse at 85% 20%, rgba(201,168,106,0.05), transparent 50%),
+                repeating-linear-gradient(135deg, rgba(201,168,106,0.02) 0px, rgba(201,168,106,0.02) 1px, transparent 1px, transparent 5px),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.79  0 0 0 0 0.66  0 0 0 0 0.42  0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-attachment: fixed;
             margin: 0;
             padding: 0;
             color: var(--ink);
@@ -62,6 +65,19 @@
             width: 120px;
             height: 2px;
             background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        header::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -4.5px;
+            transform: translateX(-50%) rotate(45deg);
+            width: 8px;
+            height: 8px;
+            background: var(--gold-bright);
+            box-shadow: 0 0 10px rgba(231, 205, 148, 0.65);
+            z-index: 2;
         }
 
         header .logo {
@@ -231,15 +247,27 @@
             padding-bottom: 16px;
         }
 
-        .collection-section h2::after {
+        .collection-section h2::before {
             content: "";
             position: absolute;
             left: 50%;
             bottom: 0;
             transform: translateX(-50%);
-            width: 60px;
+            width: 70px;
             height: 1px;
-            background: var(--gold);
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .collection-section h2::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -3.5px;
+            transform: translateX(-50%) rotate(45deg);
+            width: 7px;
+            height: 7px;
+            background: var(--gold-bright);
+            box-shadow: 0 0 8px rgba(231, 205, 148, 0.6);
         }
 
         .products-grid {
@@ -261,6 +289,7 @@
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            overflow: hidden;
             transition: 0.3s ease;
         }
 
@@ -289,38 +318,6 @@
             letter-spacing: 0.3px;
         }
 
-        .status-badge.out-of-stock-badge {
-            background-color: rgba(217, 115, 107, 0.15);
-            color: #e39790;
-            border: 1px solid rgba(217, 115, 107, 0.4);
-        }
-
-        .card.out-of-stock {
-            opacity: 0.6;
-        }
-
-        .card.out-of-stock .product-img {
-            filter: grayscale(0.4);
-        }
-
-        .card.out-of-stock .add-to-cart-btn {
-            pointer-events: none;
-            opacity: 0.5;
-            border-style: dashed;
-        }
-
-        .qv-out-of-stock-note {
-            background: rgba(217, 115, 107, 0.12);
-            border: 1px solid rgba(217, 115, 107, 0.35);
-            color: #e39790;
-            font-family: 'Cairo', sans-serif;
-            font-weight: 700;
-            font-size: 0.85rem;
-            padding: 10px 14px;
-            border-radius: 8px;
-            margin-bottom: 14px;
-            display: none;
-        }
 
         .product-img {
             width: 100%;
@@ -328,9 +325,13 @@
             object-fit: contain;
             margin-bottom: 16px;
             background-color: #0f0e0b;
-            border: 1px solid var(--hairline);
             border-radius: 8px;
             padding: 8px;
+            transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card:hover .product-img {
+            transform: scale(1.06);
         }
 
         .card h3 {
@@ -373,6 +374,16 @@
             font-weight: 700;
             margin-bottom: 14px;
             color: var(--gold-bright);
+        }
+
+        .price-currency {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.5em;
+            font-weight: 600;
+            color: var(--ink-muted);
+            letter-spacing: 1px;
+            margin-right: 4px;
+            vertical-align: middle;
         }
 
         .add-to-cart-btn {
@@ -609,7 +620,6 @@
             height: 56px;
             object-fit: cover;
             border-radius: 8px;
-            border: 1px solid var(--hairline);
             background: #0f0e0b;
         }
 
@@ -727,28 +737,87 @@
 
         .order-box {
             width: 100%;
-            max-width: 420px;
+            max-width: 440px;
+            max-height: 90vh;
+            overflow-y: auto;
             background: linear-gradient(180deg, #17150f 0%, #0e0d0a 100%);
             border: 1px solid var(--hairline-strong);
-            padding: 28px 24px;
+            padding: 30px 26px;
             border-radius: 18px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.55);
         }
 
-        .order-box h3 {
+        .order-header {
             text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--hairline);
+        }
+
+        .order-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: rgba(201, 168, 106, 0.1);
+            border: 1px solid var(--hairline-strong);
+            color: var(--gold-bright);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
+
+        .order-icon svg { width: 24px; height: 24px; }
+
+        .order-box h3 {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.6rem;
+            font-weight: 700;
             color: var(--ink);
-            margin: 0 0 20px;
-            border-bottom: 1px solid var(--hairline);
-            padding-bottom: 14px;
+            margin: 0 0 6px;
+        }
+
+        .order-header p {
+            color: var(--ink-muted);
+            font-size: 0.85rem;
+            margin: 0;
+        }
+
+        .order-field {
+            margin-bottom: 14px;
+        }
+
+        .order-input-wrap {
+            position: relative;
+        }
+
+        .order-input-wrap svg {
+            position: absolute;
+            top: 50%;
+            right: 14px;
+            transform: translateY(-50%);
+            width: 17px;
+            height: 17px;
+            stroke: var(--ink-faint);
+            pointer-events: none;
+            transition: stroke 0.2s;
+        }
+
+        .order-input-wrap:focus-within svg { stroke: var(--gold); }
+
+        .order-field label {
+            display: block;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--ink-muted);
+            letter-spacing: 0.4px;
+            margin-bottom: 6px;
         }
 
         .order-input {
             width: 100%;
-            margin-bottom: 12px;
-            padding: 12px 14px;
+            padding: 12px 42px 12px 14px;
             background: var(--surface);
             border: 1px solid var(--hairline);
             border-radius: 8px;
@@ -766,30 +835,84 @@
             box-shadow: 0 0 0 3px rgba(201,168,106,0.12);
         }
 
-        .order-note {
-            text-align: center;
-            color: var(--ink-muted);
-            font-size: 0.85rem;
-            margin: 4px 0 16px;
+        .order-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 22px 0 16px;
+        }
+
+        .order-divider::before,
+        .order-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--hairline);
+        }
+
+        .order-divider span {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--ink-faint);
+            letter-spacing: 0.3px;
+            white-space: nowrap;
         }
 
         .whatsapp-btn {
-            background: #1f3d2c;
-            color: #d8f5df;
-            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(76, 122, 90, 0.12);
+            color: var(--ink);
+            padding: 12px 14px;
             border: 1px solid rgba(76,122,90,0.4);
             width: 100%;
-            margin-bottom: 8px;
-            border-radius: 8px;
+            margin-bottom: 10px;
+            border-radius: 10px;
             font-family: 'Cairo', sans-serif;
-            font-weight: 700;
             cursor: pointer;
             transition: 0.25s;
+            text-align: right;
         }
 
         .whatsapp-btn:hover {
-            background: #25532f;
+            background: rgba(76, 122, 90, 0.22);
             border-color: #4c7a5a;
+        }
+
+        .whatsapp-icon {
+            width: 36px;
+            height: 36px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: rgba(76, 122, 90, 0.2);
+            color: #6fcf8e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .whatsapp-icon svg { width: 18px; height: 18px; }
+
+        .whatsapp-btn strong {
+            display: block;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--ink);
+        }
+
+        .whatsapp-btn small {
+            display: block;
+            font-size: 0.72rem;
+            font-weight: 500;
+            color: var(--ink-muted);
+            margin-top: 2px;
+        }
+
+        .whatsapp-btn.urgent .whatsapp-icon {
+            background: rgba(217, 168, 106, 0.18);
+            color: var(--gold-bright);
         }
 
         .order-close {
@@ -799,7 +922,7 @@
             color: var(--ink-muted);
             padding: 10px;
             border-radius: 8px;
-            margin-top: 8px;
+            margin-top: 6px;
             cursor: pointer;
             font-family: 'Cairo', sans-serif;
             font-weight: 700;
@@ -810,7 +933,90 @@
             color: var(--gold-bright);
         }
 
-        /* ================= SUCCESS / THANK YOU ================= */
+        /* ================= SPLASH SCREEN ================= */
+        #splashScreen {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 20000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.7s ease, visibility 0.7s ease;
+        }
+
+        #splashScreen.hide {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .splash-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3rem;
+            font-weight: 600;
+            letter-spacing: 12px;
+            color: var(--gold-bright);
+            opacity: 0;
+            animation: splashReveal 1.1s ease forwards;
+        }
+
+        .splash-sub {
+            margin-top: 10px;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            color: var(--ink-faint);
+            opacity: 0;
+            animation: splashReveal 1.1s ease 0.2s forwards;
+        }
+
+        @keyframes splashReveal {
+            0% { opacity: 0; transform: translateY(8px) scale(0.96); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #splashScreen { transition: none; }
+            .splash-logo, .splash-sub { animation: none; opacity: 1; }
+        }
+
+        /* ================= CUSTOM CURSOR ================= */
+        @media (pointer: fine) {
+            body.custom-cursor-active,
+            body.custom-cursor-active a,
+            body.custom-cursor-active button,
+            body.custom-cursor-active input,
+            body.custom-cursor-active .card,
+            body.custom-cursor-active * {
+                cursor: none !important;
+            }
+
+            #customCursor {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: var(--gold-bright);
+                pointer-events: none;
+                z-index: 99999;
+                opacity: 0;
+                mix-blend-mode: difference;
+                transition: width 0.2s ease, height 0.2s ease, background 0.2s ease, opacity 0.2s ease, border 0.2s ease;
+            }
+
+            #customCursor.hover {
+                width: 34px;
+                height: 34px;
+                background: transparent;
+                border: 1.5px solid var(--gold-bright);
+            }
+        }
+
+
         #successModal {
             display: none;
             position: fixed;
@@ -1111,7 +1317,6 @@
             height: 320px;
             object-fit: contain;
             background: #0f0e0b;
-            border: 1px solid var(--hairline);
             border-radius: 14px;
             padding: 20px;
         }
@@ -1223,7 +1428,6 @@
             height: 100px;
             object-fit: contain;
             background: #0f0e0b;
-            border: 1px solid var(--hairline);
             border-radius: 8px;
             padding: 6px;
             margin-bottom: 8px;
@@ -1290,6 +1494,23 @@
             width: 18px;
             height: 18px;
             stroke: currentColor;
+        }
+
+        /* ================= BUTTON PRESS FEEDBACK ================= */
+        button {
+            transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease, color 0.2s ease, opacity 0.2s ease, filter 0.2s ease;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        .card:active {
+            transform: scale(0.98);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            button:active, .card:active { transform: none; }
         }
 
         @media (max-width: 600px) {
@@ -1374,6 +1595,12 @@
 </head>
 <body>
 
+<div id="splashScreen">
+    <div class="splash-logo">ORA</div>
+    <div class="splash-sub">PREMIUM VISUAL FRAGRANCE CATALOG</div>
+</div>
+
+
     <header>
         <div class="logo">ORA</div>
         <p class="subtitle">PREMIUM VISUAL FRAGRANCE CATALOG</p>
@@ -1409,7 +1636,7 @@
                 <h4>Sì Parfum</h4>
                 <p class="tags">Chypre, Floral, Vanilla, Leather</p>
                 <p class="desc">إعادة تفسير جريئة ودافئة وحسية للغاية تتميز بنكتار الكشمش الأسود وقاعدة عميقة من الفانيليا والجلود.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Sì Parfum', 'SI-ARM-001','si.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1420,7 +1647,7 @@
                 <h4>Lovefest Cherry | 48</h4>
                 <p class="tags">Woody, Amber, Cherry, Sweet</p>
                 <p class="desc">عرض ساحر وخشبي من الكرز النضير والبرالين الحلو مقابل خشب بالو سانتو المدخن والعميق.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Lovefest Cherry', 'KAY-V28-001','Cherry.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1431,7 +1658,7 @@
                 <h4>NeoRio</h4>
                 <p class="tags">Oriental, Sweet, Boozy, Warm Spicy</p>
                 <p class="desc">تكريم جريء وفني يفتتح برائحة الرم الغنية والتين المحلى، ليتطور إلى شراب القيقب الدافئ والزعفران.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('NeoRio', 'XER-NRO-002','neorio.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1442,7 +1669,7 @@
                 <h4>Vanilla | 28</h4>
                 <p class="tags">Sweet, Vanilla, Amber, Powdery</p>
                 <p class="desc">المعيار المريح المطلق لعشاق الفانيليا، يحتفل بطبقات الفانيليا المتعددة المغلفة بجمال في السكر البني الدافئ.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Vanilla 28', 'XER-VAN-003','vanilla28.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1453,7 +1680,7 @@
                 <h4>Lemon Sugar | 14</h4>
                 <p class="tags">Citrus, Sweet, Vanilla, Fresh</p>
                 <p class="desc">رائحة حمضية حلوة ومبهجة مع قشور الليمون السكرية وأثر مريح ودافئ من الفانيليا.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Lemon Sugar 14', 'KAY-LEM-14','lemonsugar.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1464,7 +1691,7 @@
                 <h4>Libre Intense</h4>
                 <p class="tags">Vanilla, Citrus, Lavender, Amber</p>
                 <p class="desc">عطر شرقي غني وعميق يبرز اللافندر المميز وزهر البرتقال مع لمسة دافئة من الأوركيد والفانيليا.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Libre Intense', 'LIB-INT-001','libreintense.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1475,7 +1702,7 @@
                 <h4>Libre Le Parfum</h4>
                 <p class="tags">Warm Spicy, Sweet, Vanilla, Honey</p>
                 <p class="desc">النسخة الأكثر فخامة ونارية من Libre، حيث تمزج الزنجبيل الدافئ واللمسات العسلية الذهبية مع اللافندر.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Libre Le Parfum', 'JPG-LIB-LFP','libreleparfum.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1486,7 +1713,7 @@
                 <h4>La Belle Le Parfum</h4>
                 <p class="tags">Vanilla, Sweet, Fruity, Amber</p>
                 <p class="desc">عطر شرقي جذاب ومسبّب للإدمان يتميز بالكمثرى الخضراء الحلوة، والتونكا الغنية، والفانيليا الدافئة.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('La Belle Le Parfum', 'JPG-LBL-LE','labelle.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1497,7 +1724,7 @@
                 <h4>Good Girl</h4>
                 <p class="tags">Sweet, White Floral, Cacao, Vanilla</p>
                 <p class="desc">مزيج قوي يجمع بين العناصر الداكنة مثل القهوة المحمصة والكاكاو مع نفحات الزهور البيضاء المشرقة.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Good Girl', 'CH-GRL-001','goodgirl.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1508,7 +1735,7 @@
                 <h4>My Burberry Blush</h4>
                 <p class="tags">Fruity, Floral, Fresh, Rose</p>
                 <p class="desc">عطر زهري مشرق ومتألق يفتتح بالرمان الحاد والتفاح الأخضر المقرمش، ليندمج مع بتلات الورد الأنيقة.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('My Burberry Blush', 'BUR-BLSH-002','burberryblush.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1519,7 +1746,7 @@
                 <h4>Erba Pura</h4>
                 <p class="tags">Fruity, Citrus, Sweet, Amber</p>
                 <p class="desc">سلة فواكه استوائية ناضجة ومبهجة ممزوجة بالمسك الأبيض الدافئ والعنبر، تمنحك حضوراً ساحراً يدوم طويلاً.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Erba Pura', 'XER-ERB-003','erbapura.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1531,18 +1758,18 @@
                 <p class="tags">Aromatic, Green, Citrus, Fresh Spicy, Mint</p>
                 <p class="desc">تحفة عطرية فائقة الانتعاش، تنبض برائحة أوراق النعناع المسحوقة الواقعية، مع الريحان والليمون والأعشاب النظيفة.</p>
    
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Torino21', 'XER-TOR21','torino.jpeg')">إضافة إلى الطلب</button>
             </div>
 
-             <div class="card" data-name="maison francis kurkdjian baccarat rouge 540 extrait" data-brand="maison francis kurkdjian" data-stock="out">
+             <div class="card" data-name="maison francis kurkdjian baccarat rouge 540 extrait" data-brand="maison francis kurkdjian">
                    <span class="status-badge">متوفر الآن</span>
                   <img class="product-img img-skel" src="images/baccarat.jpeg" alt="Baccarat Rouge 540 Extrait" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
                   <h3>MAISON FRANCIS KURKDJIAN</h3>
                   <h4>Baccarat Rouge 540 Extrait</h4>
                   <p class="tags">Amber, Almond, Woody, Warm Spicy, Saffron</p>
                   <p class="desc">تحفة فنية أسطورية تعزز أثر الزعفران المحروق مع لمسات غنية من عجينة اللوز المر والعنبر المعدني.</p>
-                  <div class="price">450 EGP</div>
+                  <div class="price">450 <span class="price-currency">EGP</span></div>
                  <button class="add-to-cart-btn" onclick="addToCart('Baccarat Rouge 540 Extrait', 'MFK-BR540-EXT','baccarat.jpeg')">إضافة إلى الطلب</button>
               </div>
 
@@ -1553,7 +1780,7 @@
     <h4>Paradoxe</h4>
     <p class="tags">White Floral, Citrus, Sweet, Vanilla, Amber</p>
     <p class="desc">تحفة عطرية خالدة تحتفي بالأنوثة العصرية بمزيج من زهر البرتقال المنعش، توهج العنبر الدافئ، وفانيليا مريحة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Prada Paradoxe', 'PRADA-PARA','prada.jpeg')">إضافة إلى الطلب</button>
 </div>
             <div class="card" data-name="jean paul gaultier scandal" data-brand="jean paul gaultier">
@@ -1563,7 +1790,7 @@
                 <h4>Scandal</h4>
                 <p class="tags">Honey, Sweet, Citrus, White Floral</p>
                 <p class="desc">عطر يعج بالجاذبية، يمزج العسل السائل الدافئ مع غنى زهور الغاردينيا وقاعدة مثيرة من الباتشولي.</p>
-                <div class="price">450 EGP</div>
+                <div class="price">450 <span class="price-currency">EGP</span></div>
                 <button class="add-to-cart-btn" onclick="addToCart('Scandal', 'JPG-SCA-001','scandal.jpeg')">إضافة إلى الطلب</button>
             </div>
 
@@ -1574,7 +1801,7 @@
     <h4>Her Elixir</h4>
     <p class="tags">Fruity, Sweet, Vanilla, Powdery, Milky</p>
     <p class="desc">انفجار غورماند كريمي مكثف من التوت الأحمر اللذيذ، مُعزز بجمال الفانيليا والعنبر وخشب الصندل الناعم.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Her Elixir', 'BUR-ELX','her.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1585,7 +1812,7 @@
     <h4>Burberry Her</h4>
     <p class="tags">Fruity, Sweet, Woody, Musky</p>
     <p class="desc">توقيع فاكهي زهري حيوي بريطاني، يضم مزيجاً من التوت مع قاعدة خشبية مسكية متطورة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Burberry Her', 'BUR-HER','burberry.jpeg')">إضافة إلى الطلب</button>
 </div>
             <div class="card" data-name="giorgio armani si passione" data-brand="giorgio armani">
@@ -1595,7 +1822,7 @@
     <h4>Sì Passione</h4>
     <p class="tags">Fruity, Rose, Sweet, Floral, Soft Spicy</p>
     <p class="desc">عطر زهري فاكهي مشرق ومكثف يمنحك الثقة مع مزيج الكمثرى والأناناس والورد وخشب الأرز.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Sì Passione', 'SI-PAS','si2.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1610,7 +1837,7 @@
     <h4>Scandal Le Parfum</h4>
     <p class="tags">Vanilla, Caramel, Sweet, White Floral</p>
     <p class="desc">قوة عطرية زهرية بالعنبر تبرز التباين المذهل بين الياسمين الأبيض الفاخر، الكراميل المملح، والفانيليا السوداء.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Scandal Le Parfum', 'JPG-SCAN-LP','scandalle.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1622,7 +1849,7 @@
     <h4>Good Girl Blush</h4>
     <p class="tags">Vanilla, Floral, Powdery, Citrus</p>
     <p class="desc">تعبير زهري رومانسي ومنعش يجمع بين بتلات الفاوانيا والإيلنغ الحسي مع لمسة مزدوجة من الفانيليا.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Good Girl Blush', 'CH-BLUSH','goodblush.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1640,7 +1867,7 @@
     <h4>Paradigme</h4>
     <p class="tags">Amber, Powdery, Fresh Spicy, Citrus, Woody</p>
     <p class="desc">عطر ذكوري راقٍ يستخدم زهرة السوسن البودرية الأنيقة المغلفة براتنجات العنبر الغنية، الباتشولي النظيف، والجلد المريح.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Paradigme', 'PRD-PAR','brada.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1651,7 +1878,7 @@
     <h4>Erba Pura</h4>
     <p class="tags">Fruity, Sweet, Citrus, Amber, Musky</p>
     <p class="desc">سلة فواكه متوسطية غنية ومنعشة مع حمضيات حلوة، تتناغم ببراعة فوق طبقة دافئة من المسك المخملي.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Erba Pura', 'XER-EPU','erbapura.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1662,7 +1889,7 @@
     <h4>Torino21</h4>
     <p class="tags">Aromatic, Green, Citrus, Fresh Spicy, Mint</p>
     <p class="desc">تحفة عطرية فائقة الانتعاش، تنبض برائحة أوراق النعناع المسحوقة الواقعية، مع الريحان والليمون والأعشاب النظيفة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Torino21', 'XER-T21M','torino.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1673,7 +1900,7 @@
     <h4>Uomo Intense</h4>
     <p class="tags">Powdery, Iris, Leather, Vanilla, Violet</p>
     <p class="desc">معزز كاريزما استثنائي عالي المكانة، يجمع بين السوسن الإيطالي والجلد الداكن القوي مع الفانيليا السوداء.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Uomo Intense', 'VAL-UMI','uomo.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1684,7 +1911,7 @@
     <h4>Invictus</h4>
     <p class="tags">Citrus, Marine, Fresh Spicy, Aromatic</p>
     <p class="desc">عطر قوي مائي خشبي منعش، يجمع بين حيوية الجريب فروت وأوراق الغار المغناطيسية واتفاق العنبر الرمادي.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Invictus', 'RAB-INV','inva.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1695,7 +1922,7 @@
     <h4>Khamrah Qahwa</h4>
     <p class="tags">Warm Spicy, Coffee, Vanilla, Amber, Cinnamon</p>
     <p class="desc">لمسة فاخرة من القهوة العربية المحمصة داكناً مضافة إلى قلب مكثف من القرفة والتوابل والبرالين.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Khamrah Qahwa', 'LAT-QAH','kh.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1706,7 +1933,7 @@
     <h4>Khamrah</h4>
     <p class="tags">Sweet, Warm Spicy, Amber, Vanilla</p>
     <p class="desc">عطر غورماند فاخر ومتميز يفتتح برائحة التمور الحلوة، البرالين الغني، جوزة الطيب، وفانيليا مدغشقر النظيفة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Khamrah', 'LAT-KHM','kh2.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1717,18 +1944,18 @@
     <h4>Khamrah Dukhan</h4>
     <p class="tags">Smoky, Woody, Sweet, Warm Spicy, Amber</p>
     <p class="desc">نسخة داكنة وغامضة جداً تغلف حلاوة التمور الأصلية ببخور مدخن غني وخشب العود.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Khamrah Dukhan', 'LAT-DKH','kh3.jpeg')">إضافة إلى الطلب</button>
 </div>
 
-<div class="card" data-name="tom ford tobacco vanille" data-brand="tom ford" data-stock="out">
+<div class="card" data-name="tom ford tobacco vanille" data-brand="tom ford">
     <span class="status-badge">متوفر الآن</span>
     <img class="product-img img-skel" src="images/top.jpeg" alt="Tobacco Vanille" loading="lazy" decoding="async" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')">
     <h3>TOM FORD</h3>
     <h4>Tobacco Vanille</h4>
     <p class="tags">Sweet, Tobacco, Vanilla, Warm Spicy, Woody</p>
     <p class="desc">كلاسيكية أيقونية تجمع بين روائح أوراق التبغ الغنية والفانيليا الكريمية الحلوة مع لمسات الفواكه المجففة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Tobacco Vanille', 'TF-TBV','top.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1739,7 +1966,7 @@
     <h4>Million Gold</h4>
     <p class="tags">Citrus, Warm Spicy, Woody, Amber</p>
     <p class="desc">عطر عصري مفعم بالحيوية، يوازن بين قشور المندرين المنعشة والقرفة الحادة مع خشب الأرز والعنبر العميق.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Million Gold', 'RAB-MGD','mill.jpeg')">إضافة إلى الطلب</button>
 </div>
 <!-- 11. YSL - MYSLF -->
@@ -1750,7 +1977,7 @@
     <h4>MYSLF</h4>
     <p class="tags">White Floral, Citrus, Woody, Fresh, Amber</p>
     <p class="desc">توقيع ذكوري عصري راقٍ يوازن بين بتلات زهر البرتقال المضيئة مع البرغموت الحاد وأثر خشبي أمبروكساني غني.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('MYSLF', 'YSL-MSF','myslf.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1762,7 +1989,7 @@
     <h4>Ultra Male</h4>
     <p class="tags">Sweet, Vanilla, Fruity, Warm Spicy</p>
     <p class="desc">عطر احتفالي قوي يجمع بين الفانيليا السوداء والكمثرى العصيرية مع النعناع المنعش واللافندر والقرفة الحارة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Ultra Male', 'JPG-ULT','ultra.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1774,7 +2001,7 @@
     <h4>Le Male Le Parfum</h4>
     <p class="tags">Vanilla, Warm Spicy, Aromatic, Powdery, Lavender</p>
     <p class="desc">عطر أنيق وعميق، يتميز بانفجار مكثف من الهيل الحار، اللافندر المريح، السوسن البودري، والفانيليا السوداء الثقيلة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Le Male Le Parfum', 'JPG-MLP','lemale.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1786,7 +2013,7 @@
     <h4>Le Beau Le Parfum</h4>
     <p class="tags">Coconut, Sweet, Vanilla, Tropical</p>
     <p class="desc">قوة استوائية جذابة تمزج بين النوتات الخشبية الحلوة، الأناناس المنعش، كريمة جوز الهند، وفول التونكا الغني.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Le Beau Le Parfum', 'JPG-LBP','le.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1798,7 +2025,7 @@
     <h4>Invictus Legend</h4>
     <p class="tags">Aromatic, Marine, Salty, Amber, Citrus</p>
     <p class="desc">تصادم مثالي بين حرارة الصحراء الحارقة وقوة البحر المالح، يتميز بالعنبر الأحمر الغني والتوابل العطرية الجريئة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Invictus Legend', 'RAB-IVL','inv.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1810,7 +2037,7 @@
     <h4>Sauvage</h4>
     <p class="tags">Fresh Spicy, Citrus, Amber, Aromatic, Woody</p>
     <p class="desc">تركيبة خام ونبيلة تتميز بانفجار متفجر من برغموت كالابريا العصيري، ترتكز على الأمبروكسان القوي.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Sauvage', 'DIO-SVG','sau.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1822,7 +2049,7 @@
     <h4>Eros</h4>
     <p class="tags">Vanilla, Aromatic, Green, Fresh Spicy</p>
     <p class="desc">عطر شغوف يوازن بشكل مذهل بين أوراق النعناع المنعشة، التفاح المقرمش، والفانيليا الغنية.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Eros', 'VER-ERS','eros.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1834,7 +2061,7 @@
     <h4>Bleu de Chanel</h4>
     <p class="tags">Citrus, Woody, Amber, Warm Spicy, Incense</p>
     <p class="desc">ملف عطري أيقوني ونظيف يجمع بين روائح الحمضيات العطرية المنعشة مع لمسات البخور المتطورة والعنبر وخشب الأرز.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Bleu de Chanel', 'CHN-BLEU','bleu.jpeg')">إضافة إلى الطلب</button>
 </div>
 
@@ -1846,7 +2073,7 @@
     <h4>SWY Absolutely</h4>
     <p class="tags">Sweet, Amber, Vanilla, Woody, Boozy, Warm Spicy</p>
     <p class="desc">تركيبة دافئة ومكثفة تتميز باتفاق الروم المسكر الممزوج بسلاسة مع الكستناء الحلو وفانيليا مدغشقر الداكنة.</p>
-    <div class="price">450 EGP</div>
+    <div class="price">450 <span class="price-currency">EGP</span></div>
     <button class="add-to-cart-btn" onclick="addToCart('Stronger With You Absolutely', 'SWY-ABS')">إضافة إلى الطلب</button>
 </div>
 </div>
@@ -1927,7 +2154,7 @@ function openCartModal() {
                             <span class="qty-value">${item.quantity}</span>
                             <button onclick="changeQty(${index}, 1)" class="qty-btn">+</button>
                         </div>
-                        <div class="cart-item-price">${item.quantity * 450} EGP</div>
+                        <div class="cart-item-price">${item.quantity * 450} <span class="price-currency">EGP</span></div>
                     </div>
                 </div>
             `;
@@ -1935,7 +2162,7 @@ function openCartModal() {
 
         list.innerHTML += `
             <div class="total-section">
-                <div class="total-row"><span>الإجمالي</span><span>${totalItemsPrice} EGP</span></div>
+                <div class="total-row"><span>الإجمالي</span><span>${totalItemsPrice} <span class="price-currency">EGP</span></span></div>
                 <hr>
                 <button class="checkout-btn" style="width:100%;" onclick="openOrderModal()">إتمام الطلب</button>
             </div>
@@ -1961,8 +2188,6 @@ function closeOrderModal() {
 function showOrderSuccess() {
     const modal = document.getElementById('successModal');
     modal.classList.add('open');
-    clearTimeout(modal._autoCloseTimer);
-    modal._autoCloseTimer = setTimeout(closeSuccessModal, 6000);
 }
 
 function closeSuccessModal() {
@@ -2155,19 +2380,65 @@ showOrderSuccess();
 
 <div id="orderModal" onclick="if(event.target===this) closeOrderModal()">
     <div class="order-box">
-        <h3>بيانات التوصيل</h3>
-        <input type="text" id="customerName" class="order-input" placeholder="الاسم">
-        <input type="text" id="customerAddress" class="order-input" placeholder="العنوان بالتفصيل">
-        <input type="text" id="customerPhone" class="order-input" placeholder="رقم الهاتف">
+        <div class="order-header">
+            <div class="order-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3H1v13h15V3z"/><path d="M16 8h4l3 3v5h-7V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+            </div>
+            <h3>بيانات التوصيل</h3>
+            <p>إملأ/ي بياناتك عشان نكمل طلبك بسرعة</p>
+        </div>
 
-        <p class="order-note">اختر/ي رقم الواتساب لإرسال الطلب — للأوردرات المستعجلة اختر/ي الثاني</p>
-        <button onclick="sendToWhatsApp('201030488495')" class="whatsapp-btn">إرسال للرقم الأول</button>
-        <button onclick="sendToWhatsApp('201123081733')" class="whatsapp-btn">إرسال للرقم الثاني</button>
+        <div class="order-field">
+            <label for="customerName">الاسم بالكامل</label>
+            <div class="order-input-wrap">
+                <input type="text" id="customerName" class="order-input" placeholder="مثال: سارة أحمد">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+        </div>
+
+        <div class="order-field">
+            <label for="customerAddress">العنوان بالتفصيل</label>
+            <div class="order-input-wrap">
+                <input type="text" id="customerAddress" class="order-input" placeholder="المدينة، الحي، الشارع، رقم العقار">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+        </div>
+
+        <div class="order-field">
+            <label for="customerPhone">رقم الهاتف</label>
+            <div class="order-input-wrap">
+                <input type="tel" id="customerPhone" class="order-input" placeholder="01xxxxxxxxx">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+        </div>
+
+        <div class="order-divider"><span>اختاري وسيلة الإرسال</span></div>
+
+        <button onclick="sendToWhatsApp('201030488495')" class="whatsapp-btn">
+            <span class="whatsapp-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4a8.9 8.9 0 0 0-7.7 13.34L3 21l3.79-1.29a8.9 8.9 0 0 0 4.26 1.09h.01c4.9 0 8.9-3.99 8.9-8.9a8.85 8.85 0 0 0-2.36-5.58z"/></svg>
+            </span>
+            <span>
+                <strong>الرقم الأول</strong>
+                <small>للطلبات العادية</small>
+            </span>
+        </button>
+
+        <button onclick="sendToWhatsApp('201123081733')" class="whatsapp-btn urgent">
+            <span class="whatsapp-icon">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 6.32A8.86 8.86 0 0 0 12.05 4a8.9 8.9 0 0 0-7.7 13.34L3 21l3.79-1.29a8.9 8.9 0 0 0 4.26 1.09h.01c4.9 0 8.9-3.99 8.9-8.9a8.85 8.85 0 0 0-2.36-5.58z"/></svg>
+            </span>
+            <span>
+                <strong>الرقم الثاني</strong>
+                <small>للطلبات المستعجلة</small>
+            </span>
+        </button>
+
         <button onclick="closeOrderModal()" class="order-close">إغلاق</button>
     </div>
 </div>
 
-<div id="successModal" onclick="if(event.target===this) closeSuccessModal()">
+<div id="successModal">
     <div class="success-box">
         <div class="success-icon">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
@@ -2195,7 +2466,6 @@ showOrderSuccess();
                     <p class="qv-tags" id="qvTags"></p>
                     <p class="qv-desc" id="qvDesc"></p>
                     <div class="qv-price" id="qvPrice"></div>
-                    <div class="qv-out-of-stock-note" id="qvOutOfStock">نفدت الكمية حالياً — هتتوفر قريباً</div>
                     <div class="qv-actions">
                         <button class="add-to-cart-btn" id="qvAddBtn">إضافة إلى الطلب</button>
                         <button class="qv-share-btn" onclick="shareProduct()" aria-label="مشاركة على واتساب">
@@ -2219,6 +2489,42 @@ showOrderSuccess();
 <div id="toast"></div>
 
 <script>
+    // ================= شاشة التحميل (Splash) =================
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            const splash = document.getElementById('splashScreen');
+            if (splash) splash.classList.add('hide');
+        }, 1000);
+    });
+
+    // ================= مؤشر الماوس المخصص (ديسكتوب فقط) =================
+    if (window.matchMedia('(pointer: fine)').matches) {
+        document.body.classList.add('custom-cursor-active');
+        const cursorDot = document.createElement('div');
+        cursorDot.id = 'customCursor';
+        document.body.appendChild(cursorDot);
+
+        document.addEventListener('mousemove', function(e) {
+            cursorDot.style.opacity = '0.9';
+            cursorDot.style.left = e.clientX + 'px';
+            cursorDot.style.top = e.clientY + 'px';
+            cursorDot.style.transform = 'translate(-50%, -50%)';
+        });
+        document.addEventListener('mouseleave', function() {
+            cursorDot.style.opacity = '0';
+        });
+        document.addEventListener('mouseover', function(e) {
+            if (e.target.closest('a, button, .card, input, .wishlist-btn, .add-to-cart-btn, .qv-suggest-item')) {
+                cursorDot.classList.add('hover');
+            }
+        });
+        document.addEventListener('mouseout', function(e) {
+            if (e.target.closest('a, button, .card, input, .wishlist-btn, .add-to-cart-btn, .qv-suggest-item')) {
+                cursorDot.classList.remove('hover');
+            }
+        });
+    }
+
     // استرجاع حالة السلة المحفوظة عند فتح الصفحة
     updateCartUI();
 
@@ -2248,21 +2554,6 @@ showOrderSuccess();
             toggleWishlist(code, heart);
         };
         card.appendChild(heart);
-
-        // نفدت الكمية: أضيفي data-stock="out" لأي كارت عشان تعطليه
-        if (card.dataset.stock === 'out') {
-            card.classList.add('out-of-stock');
-            const badge = card.querySelector('.status-badge');
-            if (badge) {
-                badge.textContent = 'نفدت الكمية';
-                badge.classList.add('out-of-stock-badge');
-            }
-            const btn = card.querySelector('.add-to-cart-btn');
-            if (btn) {
-                btn.textContent = 'غير متوفر حالياً';
-                btn.disabled = true;
-            }
-        }
 
         // فتح نافذة العرض السريع عند الضغط على الكارت (عدا الأزرار)
         card.style.cursor = 'pointer';
@@ -2363,7 +2654,9 @@ showOrderSuccess();
     };
 
     // ================= صفحة عرض المنتج =================
-    window.openQuickView = function(card) {
+    let qvStack = [];
+
+    function renderProductView(card) {
         const brand = card.querySelector('h3').textContent;
         const name = card.querySelector('h4').textContent;
         const tags = card.querySelector('.tags').textContent;
@@ -2375,23 +2668,40 @@ showOrderSuccess();
         const qvImgEl = document.getElementById('qvImg');
         qvImgEl.classList.add('img-skel');
         qvImgEl.src = imgSrc;
-        document.getElementById('qvImg').alt = name;
+        qvImgEl.alt = name;
         document.getElementById('qvBrand').textContent = brand;
         document.getElementById('qvName').textContent = name;
         document.getElementById('qvTags').textContent = tags;
         document.getElementById('qvDesc').textContent = desc;
-        document.getElementById('qvPrice').textContent = price;
+        document.getElementById('qvPrice').innerHTML = card.querySelector('.price').innerHTML;
 
         const qvBtn = document.getElementById('qvAddBtn');
         qvBtn.setAttribute('onclick', originalBtn.getAttribute('onclick') + '; closeQuickView();');
+
+        // تحديث رابط الصفحة عشان يبقى قابل للمشاركة
+        if (card.dataset.code) {
+            history.replaceState(null, '', '#product=' + encodeURIComponent(card.dataset.code));
+        }
 
         renderSuggestions(card);
 
         const modal = document.getElementById('quickViewModal');
         modal.scrollTop = 0;
-        modal.classList.add('open');
+    }
+
+    // فتح صفحة منتج جديدة من الكاتالوج (بداية تصفح جديدة)
+    window.openQuickView = function(card) {
+        qvStack = [card];
+        renderProductView(card);
+        document.getElementById('quickViewModal').classList.add('open');
         document.body.style.overflow = 'hidden';
     };
+
+    // الانتقال لمنتج من قسم "قد يعجبك أيضاً" (بيتضاف لتاريخ التصفح)
+    function navigateToSuggestion(card) {
+        qvStack.push(card);
+        renderProductView(card);
+    }
 
     function renderSuggestions(currentCard) {
         const allCards = Array.from(document.querySelectorAll('.card'));
@@ -2410,11 +2720,11 @@ showOrderSuccess();
         picks.forEach(pc => {
             const img = pc.querySelector('.product-img').src;
             const name = pc.querySelector('h4').textContent;
-            const price = pc.querySelector('.price').textContent;
+            const priceHtml = pc.querySelector('.price').innerHTML;
             const item = document.createElement('div');
             item.className = 'qv-suggest-item';
-            item.innerHTML = `<img src="${img}" alt="${name}" loading="lazy" class="img-skel" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')"><span>${name}</span><span class="qv-suggest-price">${price}</span>`;
-            item.addEventListener('click', () => openQuickView(pc));
+            item.innerHTML = `<img src="${img}" alt="${name}" loading="lazy" class="img-skel" onload="this.classList.remove('img-skel')" onerror="this.classList.remove('img-skel')"><span>${name}</span><span class="qv-suggest-price">${priceHtml}</span>`;
+            item.addEventListener('click', () => navigateToSuggestion(pc));
             container.appendChild(item);
         });
     }
@@ -2423,14 +2733,26 @@ showOrderSuccess();
         const brand = document.getElementById('qvBrand').textContent;
         const name = document.getElementById('qvName').textContent;
         const price = document.getElementById('qvPrice').textContent;
-        const message = `✨ شوف/ي العطر ده من ORA Perfumes:\n${brand} — ${name}\nالسعر: ${price}\n\nمتوفر دلوقتي، للطلب تواصل/ي معانا على واتساب 🌟`;
+        const currentCard = qvStack[qvStack.length - 1];
+        const code = currentCard ? currentCard.dataset.code : '';
+        const baseUrl = location.href.split('#')[0];
+        const link = baseUrl + (code ? '#product=' + encodeURIComponent(code) : '');
+        const message = `✨ شوف/ي العطر ده من ORA Perfumes:\n${brand} — ${name}\nالسعر: ${price}\n\nهتلاقي كل التفاصيل هنا:\n${link}`;
         const encoded = encodeURIComponent(message);
         window.open(`https://wa.me/?text=${encoded}`, '_blank');
     };
 
+    // زرار الرجوع: يرجع خطوة واحدة في تاريخ التصفح، مش للصفحة الرئيسية مباشرة
     window.closeQuickView = function() {
+        if (qvStack.length > 1) {
+            qvStack.pop();
+            renderProductView(qvStack[qvStack.length - 1]);
+            return;
+        }
         document.getElementById('quickViewModal').classList.remove('open');
         document.body.style.overflow = '';
+        qvStack = [];
+        if (location.hash) history.replaceState(null, '', location.pathname + location.search);
     };
 
     // ================= زرار الرجوع لأعلى =================
@@ -2453,6 +2775,14 @@ showOrderSuccess();
         document.querySelectorAll('.card').forEach(card => revealObserver.observe(card));
     } else {
         document.querySelectorAll('.card').forEach(card => card.classList.add('in-view'));
+    }
+
+    // ================= فتح المنتج تلقائياً لو الرابط جاي من مشاركة =================
+    const sharedMatch = location.hash.match(/product=([^&]+)/);
+    if (sharedMatch) {
+        const sharedCode = decodeURIComponent(sharedMatch[1]);
+        const sharedCard = document.querySelector('.card[data-code="' + CSS.escape(sharedCode) + '"]');
+        if (sharedCard) openQuickView(sharedCard);
     }
 </script>
 </body>
